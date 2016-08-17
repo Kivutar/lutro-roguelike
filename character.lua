@@ -3,56 +3,61 @@ require "collisions"
 local character = {}
 character.__index = character
 
-function newCharacter()
-	local n = {}
+function newCharacter(n)
 	n.type = "character"
 	n.width = 12
-	n.height = 12
+	n.height = 16
 	n.xspeed = 0
 	n.yspeed = 0
 	n.xaccel = 0.5
-	n.yaccel = 0.1
+	n.yaccel = 0.17
 	n.o2     = 100
-	n.x = 64
-	n.y = 64
 	n.direction = "left"
 	n.stance = "fall"
 	n.DO_JUMP = 0
-	n.DO_BUBBLE = 0
+	n.A_PRESS = 0
+	n.A_RELEASE = 0
+	n.OLD_A = 0
+	n.ATTACKING = 0
 	n.speedlimit = 1
 
 	n.animations = {
 		stand = {
 			left  = newAnimation(lutro.graphics.newImage(
-				"assets/test_stand_left.png"),  16, 16, 100, 10),
+				"assets/test_stand_left.png"),  48, 32, 2, 10),
 			right = newAnimation(lutro.graphics.newImage(
-				"assets/test_stand_right.png"), 16, 16, 100, 10)
+				"assets/test_stand_right.png"), 48, 32, 2, 10)
 		},
 		run = {
 			left  = newAnimation(lutro.graphics.newImage(
-				"assets/test_run_left.png"),  16, 16, 1, 10),
+				"assets/test_run_left.png"),  48, 32, 1, 10),
 			right = newAnimation(lutro.graphics.newImage(
-				"assets/test_run_right.png"), 16, 16, 1, 10)
+				"assets/test_run_right.png"), 48, 32, 1, 10)
 		},
 		jump = {
 			left  = newAnimation(lutro.graphics.newImage(
-				"assets/test_jump_left.png"),  16, 16, 1, 10),
+				"assets/test_jump_left.png"),  48, 32, 1, 10),
 			right = newAnimation(lutro.graphics.newImage(
-				"assets/test_jump_right.png"), 16, 16, 1, 10)
+				"assets/test_jump_right.png"), 48, 32, 1, 10)
 		},
 		fall = {
 			left  = newAnimation(lutro.graphics.newImage(
-				"assets/test_fall_left.png"),  16, 16, 1, 10),
+				"assets/test_fall_left.png"),  48, 32, 1, 10),
 			right = newAnimation(lutro.graphics.newImage(
-				"assets/test_fall_right.png"), 16, 16, 1, 10)
+				"assets/test_fall_right.png"), 48, 32, 1, 10)
 		},
 		attached = {
 			left  = newAnimation(lutro.graphics.newImage(
-				"assets/test_attached_left.png"),  16, 16, 1, 10),
+				"assets/test_attached_left.png"),  48, 32, 1, 10),
 			right = newAnimation(lutro.graphics.newImage(
-				"assets/test_attached_right.png"), 16, 16, 1, 10)
+				"assets/test_attached_right.png"), 48, 32, 1, 10)
 		},
-
+		attack = {
+			left  = newAnimation(lutro.graphics.newImage(
+				"assets/test_attack_left.png"),  48, 32, 2, 10),
+			right = newAnimation(lutro.graphics.newImage(
+				"assets/test_attack_right.png"), 48, 32, 2, 10)
+		},
 	}
 
 	n.anim = n.animations[n.stance][n.direction]
@@ -64,12 +69,12 @@ function newCharacter()
 end
 
 function character:on_the_ground()
-	return solid_at(self.x + 1, self.y + 12, self)
-		or solid_at(self.x + 11, self.y + 12, self)
+	return solid_at(self.x + 4, self.y + 16, self)
+		or solid_at(self.x + 11, self.y + 16, self)
 end
 
 function character:attached()
-	return (self.direction == "right" and solid_at(self.x + 12, self.y, self) and not solid_at(self.x + 12, self.y -1, self))
+	return (self.direction == "right" and solid_at(self.x + 15, self.y, self) and not solid_at(self.x + 15, self.y -1, self))
 	    or (self.direction == "left"  and solid_at(self.x -  1, self.y, self) and not solid_at(self.x -  1, self.y -1, self))
 end
 
@@ -86,7 +91,7 @@ function character:update(dt)
 	if JOY_Y then
 		self.speedlimit = 2
 	else
-		self.speedlimit = 1
+		self.speedlimit = 1.5
 	end
 
 	-- gravity
@@ -103,22 +108,31 @@ function character:update(dt)
 		self.DO_JUMP = 0
 	end
 
-	-- bubble
+	if self.DO_JUMP == 1 then
+		if self:on_the_ground() or self:attached() then
+			self.y = self.y - 1
+			self.yspeed = -3
+			lutro.audio.play(self.sfx.jump)
+		end
+	end
+
+	-- attacking
 	if JOY_A then
-		self.DO_BUBBLE = self.DO_BUBBLE + 1
+		self.A_PRESS = self.A_PRESS + 1
+		self.OLD_A = 1
 	else
-		self.DO_BUBBLE = 0
+		if self.OLD_A == 1 then
+			self.A_RELEASE = 1
+			self.ATTACKING = 32
+		end
+		self.OLD_A = 0
+		self.A_PRESS = 0
 	end
 
-	if self.DO_BUBBLE == 1 then
-		self.o2 = self.o2 - 10
-		table.insert(entities, newBubble({ x = self.x, y = self.y - 4, direction = self.direction }))
-	end
+	print(self.A_PRESS, self.A_RELEASE)
 
-	if self.DO_JUMP == 1 and (self:on_the_ground() or self:attached()) then
-		self.y = self.y - 1
-		self.yspeed = -3
-		lutro.audio.play(self.sfx.jump)
+	if self.ATTACKING > 0 then
+		self.ATTACKING = self.ATTACKING - 1
 	end
 
 	-- moving
@@ -172,7 +186,15 @@ function character:update(dt)
 	end
 
 	-- animations
-	if self:on_the_ground() then
+	if self.A_PRESS > 0 then
+		self.stance = "attack"
+		self.anim.timer = 0.0
+	elseif self.ATTACKING > 0 then
+		self.stance = "attack"
+		if self.A_RELEASE == 1 then
+			self.anim.timer = 4.0
+		end
+	elseif self:on_the_ground() then
 		if self.xspeed == 0 then
 			self.stance = "stand"
 		else
@@ -215,10 +237,14 @@ function character:update(dt)
 	if camera_y < -(#map * 16) + SCREEN_HEIGHT then
 		camera_y = -(#map * 16) + SCREEN_HEIGHT
 	end
+
+	if self.A_RELEASE == 1 then
+		self.A_RELEASE = 0
+	end
 end
 
 function character:draw()
-	self.anim:draw(self.x-2, self.y-4)
+	self.anim:draw(self.x-16-2, self.y-16)
 end
 
 function character:on_collide(e1, e2, dx, dy)
