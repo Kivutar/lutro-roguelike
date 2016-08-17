@@ -53,3 +53,26 @@ function solid_at(x, y, exclude)
 	end
 	return false;
 end
+
+function object_collide(entity, type)
+	for i = 1, #entities do
+		for j = 1, #entities do
+			if j ~= i then
+				local e1 = entities[i]
+				local e2 = entities[j]
+
+				if  e1.x < e2.x + e2.width
+				and e1.x + e1.width > e2.x
+				and e1.y < e2.y + e2.height
+				and e1.height + e1.y > e2.y
+				and e1 == entity
+				and e2.type == type
+
+				then
+					return e2
+				end
+			end
+		end
+	end
+	return false
+end

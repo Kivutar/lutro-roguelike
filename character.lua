@@ -20,6 +20,8 @@ function newCharacter(n)
 	n.OLD_A = 0
 	n.ATTACKING = 0
 	n.speedlimit = 1
+	n.using_lader = false
+	n.sword = nil
 
 	n.animations = {
 		stand = {
@@ -58,12 +60,19 @@ function newCharacter(n)
 			right = newAnimation(lutro.graphics.newImage(
 				"assets/test_attack_right.png"), 48, 32, 2, 10)
 		},
+		lader = {
+			left  = newAnimation(lutro.graphics.newImage(
+				"assets/test_lader_left.png"),  48, 32, 2, 10),
+			right = newAnimation(lutro.graphics.newImage(
+				"assets/test_lader_right.png"), 48, 32, 2, 10)
+		},
 	}
 
 	n.anim = n.animations[n.stance][n.direction]
 	n.sfx = {
 		jump = lutro.audio.newSource("assets/jump.wav"),
-		step = lutro.audio.newSource("assets/step.wav")
+		step = lutro.audio.newSource("assets/step.wav"),
+		sword = lutro.audio.newSource("assets/sword.wav"),
 	}
 	return setmetatable(n, character)
 end
@@ -82,6 +91,7 @@ function character:update(dt)
 	local JOY_LEFT  = lutro.input.joypad("left")
 	local JOY_RIGHT = lutro.input.joypad("right")
 	local JOY_UP    = lutro.input.joypad("up")
+	local JOY_DOWN  = lutro.input.joypad("down")
 	local JOY_B     = lutro.input.joypad("b")
 	local JOY_Y     = lutro.input.joypad("y")
 	local JOY_A     = lutro.input.joypad("a")
@@ -95,7 +105,7 @@ function character:update(dt)
 	end
 
 	-- gravity
-	if not self:on_the_ground() and not self:attached() then
+	if not self:on_the_ground() and not self:attached() and not self.using_lader then
 		self.yspeed = self.yspeed + self.yaccel
 		if (self.yspeed > 3) then self.yspeed = 3 end
 		self.y = self.y + self.yspeed
@@ -123,16 +133,31 @@ function character:update(dt)
 	else
 		if self.OLD_A == 1 then
 			self.A_RELEASE = 1
-			self.ATTACKING = 32
+			self.ATTACKING = 24
+
+			for i=1, #entities do
+				if entities[i] == self.sword then
+					table.remove(entities, i)
+				end
+			end
+
+			self.sword = newSword({holder = self})
+			table.insert(entities, self.sword)
+
+			lutro.audio.play(self.sfx.sword)
 		end
 		self.OLD_A = 0
 		self.A_PRESS = 0
 	end
 
-	print(self.A_PRESS, self.A_RELEASE)
-
 	if self.ATTACKING > 0 then
 		self.ATTACKING = self.ATTACKING - 1
+	else
+		for i=1, #entities do
+			if entities[i] == self.sword then
+				table.remove(entities, i)
+			end
+		end
 	end
 
 	-- moving
@@ -185,8 +210,30 @@ function character:update(dt)
 		end
 	end
 
+	local lader = object_collide(self, "lader")
+	if lader then
+		if JOY_UP then
+			self.using_lader = true
+			self.y = self.y - 1
+			self.xspeed = 0
+			self.x = lader.x + 2
+		elseif JOY_DOWN then
+			self.using_lader = true
+			self.y = self.y + 1
+			self.xspeed = 0
+			self.x = lader.x + 2
+		end
+	else
+		self.using_lader = false
+	end
+
 	-- animations
-	if self.A_PRESS > 0 then
+	if self.using_lader then
+		self.stance = "lader"
+		if not JOY_UP and not JOY_DOWN then
+			self.anim.timer = 0.0
+		end
+	elseif self.A_PRESS > 0 then
 		self.stance = "attack"
 		self.anim.timer = 0.0
 	elseif self.ATTACKING > 0 then
@@ -220,8 +267,10 @@ function character:update(dt)
 	self.anim:update(dt)
 
 	-- camera
-	camera_x = - self.x + SCREEN_WIDTH/2 - self.width/2;
-	camera_y = - self.y + SCREEN_HEIGHT/2 - self.height/2;
+	new_camera_x = - self.x + SCREEN_WIDTH/2 - self.width/2
+	new_camera_y = - self.y + SCREEN_HEIGHT/2 - self.height/2
+	camera_x = camera_x + (new_camera_x-camera_x) / 10.0;
+	camera_y = camera_y + (new_camera_y-camera_y) / 10.0;
 
 	if camera_x > 0 then
 		camera_x = 0
@@ -252,7 +301,9 @@ function character:on_collide(e1, e2, dx, dy)
 		if math.abs(dy) < math.abs(dx) and dy ~= 0 then
 			self.yspeed = 0
 			self.y = self.y + dy
-			lutro.audio.play(self.sfx.step)
+			if not self.using_lader then
+				lutro.audio.play(self.sfx.step)
+			end
 		end
 
 		if math.abs(dx) < math.abs(dy) and dx ~= 0 then
