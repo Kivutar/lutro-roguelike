@@ -20,7 +20,7 @@ function spikes:draw()
 end
 
 function spikes:on_collide(e1, e2, dx, dy)
-	if e2.type == "character" then
-
+	if e2.type == "character" and dy < 0 then
+		e2.hp = 0
 	end
 end

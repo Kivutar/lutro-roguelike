@@ -8,6 +8,8 @@ require "fatknight"
 require "bubble"
 require "spikes"
 require "sword"
+require "fatknightsword"
+require "lifebar"
 
 function lutro.conf(t)
 	t.width  = SCREEN_WIDTH
@@ -428,8 +430,9 @@ function lutro.load()
 		end
 	end
 
-	character = newCharacter({ x=(start[2]-1)*8*16+64, y=48})
+	character = newCharacter({x=(start[2]-1)*8*16+64, y=48})
 	table.insert(entities, character)
+	lifebar = newLifeBar()
 end
 
 function lutro.update(dt)
@@ -463,6 +466,8 @@ function lutro.draw()
 	end
 
 	lutro.graphics.pop()
+
+	lifebar:draw()
 
 	-- for my=1, 4 do
 	-- 	for mx=1, 4 do

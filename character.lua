@@ -22,6 +22,9 @@ function newCharacter(n)
 	n.speedlimit = 1
 	n.using_lader = false
 	n.sword = nil
+	n.hp = 5
+	n.maxhp = 5
+	n.HIT = 0
 
 	n.animations = {
 		stand = {
@@ -54,6 +57,12 @@ function newCharacter(n)
 			right = newAnimation(lutro.graphics.newImage(
 				"assets/test_attached_right.png"), 48, 32, 1, 10)
 		},
+		hit = {
+			left  = newAnimation(lutro.graphics.newImage(
+				"assets/test_hit_left.png"),  48, 32, 1, 10),
+			right = newAnimation(lutro.graphics.newImage(
+				"assets/test_hit_right.png"), 48, 32, 1, 10)
+		},
 		attack = {
 			left  = newAnimation(lutro.graphics.newImage(
 				"assets/test_attack_left.png"),  48, 32, 2, 10),
@@ -65,6 +74,12 @@ function newCharacter(n)
 				"assets/test_lader_left.png"),  48, 32, 2, 10),
 			right = newAnimation(lutro.graphics.newImage(
 				"assets/test_lader_right.png"), 48, 32, 2, 10)
+		},
+		dead = {
+			left  = newAnimation(lutro.graphics.newImage(
+				"assets/test_dead_left.png"),  48, 32, 2, 10),
+			right = newAnimation(lutro.graphics.newImage(
+				"assets/test_dead_right.png"), 48, 32, 2, 10)
 		},
 	}
 
@@ -112,7 +127,7 @@ function character:update(dt)
 	end
 
 	-- jumping
-	if JOY_B then
+	if JOY_B and self.HIT == 0 and self.hp > 0 then
 		self.DO_JUMP = self.DO_JUMP + 1
 	else
 		self.DO_JUMP = 0
@@ -127,7 +142,7 @@ function character:update(dt)
 	end
 
 	-- attacking
-	if JOY_A then
+	if JOY_A and self.HIT == 0 and self.hp > 0 then
 		self.A_PRESS = self.A_PRESS + 1
 		self.OLD_A = 1
 	else
@@ -161,7 +176,7 @@ function character:update(dt)
 	end
 
 	-- moving
-	if JOY_LEFT then
+	if JOY_LEFT and self.HIT == 0 and self.hp > 0 then
 		self.xspeed = self.xspeed - self.xaccel;
 		if self.xspeed < -self.speedlimit then
 			self.xspeed = -self.speedlimit
@@ -169,7 +184,7 @@ function character:update(dt)
 		self.direction = "left";
 	end
 
-	if JOY_RIGHT then
+	if JOY_RIGHT and self.HIT == 0 and self.hp > 0 then
 		self.xspeed = self.xspeed + self.xaccel;
 		if self.xspeed > self.speedlimit then
 			self.xspeed = self.speedlimit
@@ -177,7 +192,7 @@ function character:update(dt)
 		self.direction = "right";
 	end
 
-	if JOY_UP and self:attached() then
+	if JOY_UP and self:attached() and self.HIT == 0 and self.hp > 0 then
 		if self.direction == "right" then
 			self.y = self.y - 1
 			self.yspeed = -2
@@ -193,9 +208,10 @@ function character:update(dt)
 	self.x = self.x + self.xspeed;
 
 	-- decelerating
-	if  not (JOY_RIGHT and self.xspeed > 0)
-	and not (JOY_LEFT  and self.xspeed < 0)
+	if  ((not JOY_RIGHT and self.xspeed > 0)
+	or  (not JOY_LEFT  and self.xspeed < 0))
 	and self:on_the_ground()
+	and self.HIT == 0
 	then
 		if self.xspeed > 0 then
 			self.xspeed = self.xspeed - 10
@@ -206,6 +222,18 @@ function character:update(dt)
 			self.xspeed = self.xspeed + 10;
 			if self.xspeed > 0 then
 				self.xspeed = 0;
+			end
+		end
+	elseif self.HIT > 0 then
+		if self.xspeed > 0 then
+			self.xspeed = self.xspeed - 0.05
+			if self.xspeed < 0 then
+				self.xspeed = 0
+			end
+		elseif self.xspeed < 0 then
+			self.xspeed = self.xspeed + 0.05;
+			if self.xspeed > 0 then
+				self.xspeed = 0
 			end
 		end
 	end
@@ -228,7 +256,11 @@ function character:update(dt)
 	end
 
 	-- animations
-	if self.using_lader then
+	if self.hp <= 0 and self:on_the_ground() then
+		self.stance = "dead"
+	elseif self.HIT > 0 then
+		self.stance = "hit"
+	elseif self.using_lader then
 		self.stance = "lader"
 		if not JOY_UP and not JOY_DOWN then
 			self.anim.timer = 0.0
@@ -290,6 +322,10 @@ function character:update(dt)
 	if self.A_RELEASE == 1 then
 		self.A_RELEASE = 0
 	end
+
+	if self.HIT > 0 then
+		self.HIT = self.HIT - 1
+	end
 end
 
 function character:draw()
@@ -301,7 +337,7 @@ function character:on_collide(e1, e2, dx, dy)
 		if math.abs(dy) < math.abs(dx) and dy ~= 0 then
 			self.yspeed = 0
 			self.y = self.y + dy
-			if not self.using_lader then
+			if dy < -1 and not self.using_lader then
 				lutro.audio.play(self.sfx.step)
 			end
 		end
@@ -310,5 +346,15 @@ function character:on_collide(e1, e2, dx, dy)
 			self.xspeed = 0
 			self.x = self.x + dx
 		end
+	elseif e2.type == "fatknightsword" and self.HIT == 0 then
+		self.HIT = 32
+		if e2.holder.x < self.x then
+			self.xspeed = 4
+		else
+			self.xspeed = -4
+		end
+		self.y = self.y - 1
+		self.yspeed = -2
+		self.hp = self.hp - 3
 	end
 end
