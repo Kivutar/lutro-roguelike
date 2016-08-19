@@ -10,6 +10,7 @@ require "spikes"
 require "sword"
 require "fatknightsword"
 require "lifebar"
+require "vase"
 
 function lutro.conf(t)
 	t.width  = SCREEN_WIDTH
@@ -138,6 +139,16 @@ blocks = {
 			{0,0,0,0,0,0,0,0},
 			{0,0,0,0,1,1,1,0},
 			{1,1,0,0,1,1,1,1},
+			{1,1,1,1,1,1,1,1},
+		},
+		{
+			{1,1,1,1,1,1,1,1},
+			{1,1,1,1,1,1,1,1},
+			{0,0,0,0,0,0,0,0},
+			{0,0,0,0,0,0,0,0},
+			{0,0,0,0,0,0,0,0},
+			{0,0,0,0,1,1,1,0},
+			{1,1,3,3,1,1,1,1},
 			{1,1,1,1,1,1,1,1},
 		},
 		{
@@ -368,6 +379,7 @@ function lutro.load()
 		" abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,!?-+/")
 	lutro.graphics.setFont(font)
 	sfx_gold = lutro.audio.newSource("assets/gold.wav")
+	sfx_vase = lutro.audio.newSource("assets/vase.wav")
 
 	math.randomseed(os.time())
 
@@ -416,8 +428,13 @@ function lutro.load()
 
 	for y=1, #map do
 		for x=1, #map[y] do
-			if map[y][x] == 0 and math.random(200) == 200 then
-				--table.insert(entities, newFish({x = (x-1)*16, y = (y-1)*16}))
+			if map[y][x] == 0
+			and map[y+1] and map[y+1][x] == 1
+			and map[y-1] and map[y-1][x] == 0
+			and map[y][x-1] and map[y][x-1] == 0
+			and map[y][x+1] and map[y][x+1] == 0
+			and math.random(20) == 20 then
+				table.insert(entities, newVase({x = (x-1)*16, y = (y-1)*16}))
 			elseif map[y][x] == 1 then
 				table.insert(entities, newGround({x = (x-1)*16, y = (y-1)*16, mapx = x, mapy = y}))
 			elseif map[y][x] == 2 then
