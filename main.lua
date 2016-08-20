@@ -508,7 +508,7 @@ function lutro.load()
 		end
 	end
 
-	character = newCharacter({x=(start[2]-1)*8*16+64, y=48})
+	character = newCharacter({x=(start[2]-1)*8*16+64-8, y=48})
 	table.insert(entities, character)
 	lifebar = newLifeBar()
 end
