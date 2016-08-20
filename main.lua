@@ -11,6 +11,8 @@ require "sword"
 require "fatknightsword"
 require "lifebar"
 require "vase"
+require "blood"
+require "web"
 
 function lutro.conf(t)
 	t.width  = SCREEN_WIDTH
@@ -136,6 +138,16 @@ blocks = {
 			{1,1,1,1,1,1,1,1},
 			{0,0,0,0,0,0,0,0},
 			{0,0,0,0,0,0,0,0},
+			{0,0,0,1,1,0,0,0},
+			{1,0,0,1,1,0,0,1},
+			{1,1,3,1,1,3,1,1},
+			{1,1,1,1,1,1,1,1},
+		},
+		{
+			{1,1,1,1,1,1,1,1},
+			{1,1,1,1,1,1,1,1},
+			{0,0,0,0,0,0,0,0},
+			{0,0,0,0,0,0,0,0},
 			{0,0,0,0,0,0,0,0},
 			{0,0,0,0,1,1,1,0},
 			{1,1,0,0,1,1,1,1},
@@ -202,6 +214,46 @@ blocks = {
 			{0,0,0,0,0,0,0,0},
 			{0,0,0,0,0,0,0,0},
 			{0,0,0,0,0,0,0,0},
+		},
+		{
+			{2,1,0,1,1,0,1,0},
+			{2,1,0,0,0,0,1,0},
+			{2,1,0,0,0,0,1,0},
+			{2,0,0,1,1,0,1,0},
+			{2,0,0,0,0,0,1,1},
+			{1,1,2,0,0,0,0,2},
+			{0,1,2,1,1,1,1,2},
+			{0,1,2,0,0,0,1,2},
+		},
+		{
+			{1,1,0,0,0,0,1,1},
+			{1,0,0,0,0,0,0,1},
+			{0,0,1,1,1,1,0,0},
+			{0,0,1,4,0,1,0,0},
+			{0,0,1,0,0,1,0,0},
+			{0,0,1,1,1,1,0,0},
+			{1,0,0,0,0,0,0,1},
+			{1,1,0,0,0,0,1,1},
+		},
+		{
+			{0,0,1,0,0,0,0,0},
+			{1,0,0,0,1,1,0,1},
+			{1,0,0,0,0,0,0,0},
+			{0,0,1,0,0,0,1,0},
+			{0,0,0,0,1,0,0,0},
+			{0,0,1,0,0,0,0,0},
+			{0,0,1,1,0,0,1,0},
+			{1,0,0,0,0,1,1,0},
+		},
+		{
+			{0,0,0,0,0,0,0,0},
+			{0,1,1,1,0,0,0,0},
+			{0,1,0,0,0,0,0,0},
+			{0,1,0,0,1,1,1,0},
+			{0,1,0,0,0,0,1,0},
+			{0,1,1,1,0,0,1,0},
+			{0,0,0,0,0,0,1,0},
+			{0,0,0,0,1,1,1,0},
 		},
 		{
 			{1,0,0,0,0,0,0,1},
@@ -330,7 +382,7 @@ blocks = {
 	},
 }
 
-function  addroom()
+function addroom()
 	for my=1, 4 do
 		for mx=1, 4 do
 			rand = math.random(5)
@@ -380,6 +432,8 @@ function lutro.load()
 	lutro.graphics.setFont(font)
 	sfx_gold = lutro.audio.newSource("assets/gold.wav")
 	sfx_vase = lutro.audio.newSource("assets/vase.wav")
+	sfx_male_die = lutro.audio.newSource("assets/male_die.wav")
+	sfx_hurt = lutro.audio.newSource("assets/hurt.wav")
 
 	math.randomseed(os.time())
 
@@ -435,6 +489,13 @@ function lutro.load()
 			and map[y][x+1] and map[y][x+1] == 0
 			and math.random(20) == 20 then
 				table.insert(entities, newVase({x = (x-1)*16, y = (y-1)*16}))
+			elseif map[y][x] == 0
+			and map[y+1] and map[y+1][x] == 0
+			and map[y-1] and map[y-1][x] == 1
+			and map[y][x-1] and map[y][x-1] == 1
+			and map[y][x+1] and map[y][x+1] == 0
+			and math.random(3) == 3 then
+				table.insert(entities, newWeb({x = (x-1)*16, y = (y-1)*16}))
 			elseif map[y][x] == 1 then
 				table.insert(entities, newGround({x = (x-1)*16, y = (y-1)*16, mapx = x, mapy = y}))
 			elseif map[y][x] == 2 then

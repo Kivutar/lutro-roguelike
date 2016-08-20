@@ -56,7 +56,9 @@ function ground:draw()
 		lutro.graphics.draw(tileset, quad, self.x, self.y-16)
 	-- vertical bar
 	elseif (map[self.mapy  ] and map[self.mapy  ][self.mapx-1] ~= 1)
-	and    (map[self.mapy  ] and map[self.mapy  ][self.mapx+1] ~= 1) then
+	and    (map[self.mapy  ] and map[self.mapy  ][self.mapx+1] ~= 1)
+	and    (map[self.mapy  ] and map[self.mapy  ][self.mapx-1] ~= nil)
+	and    (map[self.mapy  ] and map[self.mapy  ][self.mapx+1] ~= nil) then
 		quad = lutro.graphics.newQuad(80, 32, 16, 16, 128, 128)
 		lutro.graphics.draw(tileset, quad, self.x, self.y)
 
@@ -82,11 +84,13 @@ function ground:draw()
 		lutro.graphics.draw(tileset, quad, self.x, self.y)
 
 	-- left
-	elseif (map[self.mapy] and map[self.mapy][self.mapx-1] ~= 1) then
+	elseif (map[self.mapy] and map[self.mapy][self.mapx-1] ~= 1)
+	and (map[self.mapy] and map[self.mapy][self.mapx-1] ~= nil) then
 		quad = lutro.graphics.newQuad(16, 32, 16, 16, 128, 128)
 		lutro.graphics.draw(tileset, quad, self.x, self.y)
 	-- right
-	elseif (map[self.mapy] and map[self.mapy][self.mapx+1] ~= 1) then
+	elseif (map[self.mapy] and map[self.mapy][self.mapx+1] ~= 1)
+	and (map[self.mapy] and map[self.mapy][self.mapx+1] ~= nil) then
 		quad = lutro.graphics.newQuad(48, 32, 16, 16, 128, 128)
 		lutro.graphics.draw(tileset, quad, self.x, self.y)
 	-- top

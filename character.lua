@@ -23,6 +23,7 @@ function newCharacter(n)
 	n.using_lader = false
 	n.sword = nil
 	n.hp = 5
+	n.oldhp = 5
 	n.maxhp = 5
 	n.HIT = 0
 
@@ -114,7 +115,7 @@ function character:update(dt)
 	self.o2 = self.o2 - 0.05
 
 	if JOY_Y then
-		self.speedlimit = 2
+		self.speedlimit = 3
 	else
 		self.speedlimit = 1.5
 	end
@@ -238,6 +239,10 @@ function character:update(dt)
 		end
 	end
 
+	if self.HIT > 0 or self.hp <= 0 then
+		table.insert(entities, newBlood({x=self.x+6, y=self.y+8}))
+	end
+
 	local lader = object_collide(self, "lader")
 	if lader then
 		if JOY_UP then
@@ -326,6 +331,11 @@ function character:update(dt)
 	if self.HIT > 0 then
 		self.HIT = self.HIT - 1
 	end
+
+	if self.oldhp > 0 and self.hp <= 0 then
+		lutro.audio.play(sfx_male_die)
+	end
+	self.oldhp = self.hp
 end
 
 function character:draw()
@@ -333,7 +343,7 @@ function character:draw()
 end
 
 function character:on_collide(e1, e2, dx, dy)
-	if e1.type == "ground" or e2.type == "ground" then
+	if e2.type == "ground" then
 		if math.abs(dy) < math.abs(dx) and dy ~= 0 then
 			self.yspeed = 0
 			self.y = self.y + dy
@@ -356,5 +366,6 @@ function character:on_collide(e1, e2, dx, dy)
 		self.y = self.y - 1
 		self.yspeed = -2
 		self.hp = self.hp - 3
+		lutro.audio.play(sfx_hurt)
 	end
 end

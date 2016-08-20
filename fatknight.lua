@@ -103,7 +103,7 @@ function fatknight:update(dt)
 		self.xspeed = 0
 	end
 
-	if self.ATTACKING == 16 then
+	if self.ATTACKING == 14 then
 		for i=1, #entities do
 			if entities[i] == self.sword then
 				table.remove(entities, i)
