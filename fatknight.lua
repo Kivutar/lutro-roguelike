@@ -85,8 +85,8 @@ function fatknight:update(dt)
 	-- apply speed
 	self.x = self.x + self.xspeed;
 
-	local dX = self.x - character.x
-    local dY = self.y - character.y
+	local dX = (self.x + self.width/2) - (character.x + character.width/2)
+    local dY = (self.y + self.height/2) - (character.y + character.height/2)
 	local distance = math.sqrt( ( dX^2 ) + ( dY^2 ) )
 
 	if distance < 96 and self.ATTACKING == 0 and self.HIT == 0 and character.hp > 0 then
@@ -97,7 +97,7 @@ function fatknight:update(dt)
 		self.behavior = "sleeping"
 	end
 
-	if distance < 32 and self.HIT == 0 and self.ATTACKING == 0 and character.hp > 0 then
+	if distance < 42 and self.HIT == 0 and self.ATTACKING == 0 and character.hp > 0 then
 		self.behavior = "attacking"
 		self.ATTACKING = 32
 		self.xspeed = 0

@@ -30,8 +30,10 @@ function vase:on_collide(e1, e2, dx, dy)
 	if e2.type == "sword" then
 		if self.stance == "normal" then
 			lutro.audio.play(sfx_vase)
-			-- table.insert(entities, newBattery(
-			-- 	{x = self.x + self.width/2, y = self.y + self.height / 2}))
+			for i=0, math.random(0, 1) do
+				table.insert(entities, newCoin(
+					{x = self.x + self.width/2, y = self.y + self.height / 2}))
+			end
 		end
 		self.stance = "broken"
 	end

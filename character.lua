@@ -22,11 +22,17 @@ function newCharacter(n)
 	n.speedlimit = 1
 	n.using_lader = false
 	n.sword = nil
-	n.hp = 5
-	n.oldhp = 5
-	n.maxhp = 5
-	n.HIT = 0
 	n.class = "enchanter"
+	if n.class == "knight" then
+		n.hp = 5
+		n.oldhp = 5
+		n.maxhp = 5
+	elseif n.class == "enchanter" then
+		n.hp = 3
+		n.oldhp = 3
+		n.maxhp = 3
+	end
+	n.HIT = 0
 
 	n.animations = {
 		knight = {
@@ -194,7 +200,8 @@ function character:update(dt)
 	end
 
 	if self.DO_JUMP == 1 then
-		if self:on_the_ground() or self:attached() then
+		if self:on_the_ground() or self:attached() or self.using_lader then
+			self.using_lader = false
 			self.y = self.y - 1
 			self.yspeed = -3
 			lutro.audio.play(self.sfx.jump)

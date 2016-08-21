@@ -7,11 +7,12 @@ function detect_collisions()
 				local e1 = entities[i]
 				local e2 = entities[j]
 
-				if  e1.x < e2.x + e2.width
+				if e1 and e2
+				and	e1.on_collide
+				and e1.x < e2.x + e2.width
 				and e1.x + e1.width > e2.x
 				and e1.y < e2.y + e2.height
 				and e1.height + e1.y > e2.y
-				and e1.on_collide
 
 				then
 					local e1cx = e1.x + e1.width / 2.0
@@ -43,10 +44,10 @@ function solid_at(x, y, exclude)
 	for i = 1, #entities do
 		local e = entities[i];
 
-		if  x >= e.x and x < e.x + e.width
-		and y >= e.y and y < e.y + e.height
+		if e.type == "ground"
 		and e ~= exclude
-		and e.type == "ground"
+		and x >= e.x and x < e.x + e.width
+		and y >= e.y and y < e.y + e.height
 		then
 			return true;
 		end
@@ -61,12 +62,12 @@ function object_collide(entity, type)
 				local e1 = entities[i]
 				local e2 = entities[j]
 
-				if  e1.x < e2.x + e2.width
+				if e1 == entity
+				and e2.type == type
+				and e1.x < e2.x + e2.width
 				and e1.x + e1.width > e2.x
 				and e1.y < e2.y + e2.height
 				and e1.height + e1.y > e2.y
-				and e1 == entity
-				and e2.type == type
 
 				then
 					return e2

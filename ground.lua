@@ -9,8 +9,6 @@ function newGround(object)
 	n.width = 16
 	n.height = 16
 
-	n.gold = math.random(100)
-
 	return setmetatable(n, ground)
 end
 
@@ -24,8 +22,16 @@ function ground:draw()
 		return
 	end
 
-	-- left end
+	-- single
 	if  (map[self.mapy  ] and map[self.mapy  ][self.mapx-1] ~= 1)
+	and (map[self.mapy  ] and map[self.mapy  ][self.mapx+1] ~= 1)
+	and (map[self.mapy-1] and map[self.mapy-1][self.mapx  ] ~= 1)
+	and (map[self.mapy+1] and map[self.mapy+1][self.mapx  ] ~= 1) then
+		quad = lutro.graphics.newQuad(80, 64, 16, 32, 128, 128)
+		lutro.graphics.draw(tileset, quad, self.x, self.y-16)
+
+	-- left end
+	elseif  (map[self.mapy  ] and map[self.mapy  ][self.mapx-1] ~= 1)
 	and (map[self.mapy-1] and map[self.mapy-1][self.mapx  ] ~= 1)
 	and (map[self.mapy+1] and map[self.mapy+1][self.mapx  ] ~= 1) then
 		quad = lutro.graphics.newQuad(16, 64, 16, 32, 128, 128)
@@ -105,14 +111,6 @@ function ground:draw()
 	-- center
 	else
 		quad = lutro.graphics.newQuad(32, 32, 16, 16, 128, 128)
-		lutro.graphics.draw(tileset, quad, self.x, self.y)
-	end
-
-	if self.gold > 90 then
-		quad = lutro.graphics.newQuad(0, 16, 16, 16, 128, 128)
-		lutro.graphics.draw(tileset, quad, self.x, self.y)
-	elseif self.gold > 80 then
-		quad = lutro.graphics.newQuad(0, 0, 16, 16, 128, 128)
 		lutro.graphics.draw(tileset, quad, self.x, self.y)
 	end
 	

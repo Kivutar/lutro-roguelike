@@ -11,7 +11,9 @@ require "sword"
 require "fatknightsword"
 require "lifebar"
 require "vase"
+require "treasure"
 require "blood"
+require "coin"
 require "web"
 
 function lutro.conf(t)
@@ -101,6 +103,16 @@ blocks = {
 			{0,1,1,1,1,1,2,0},
 			{0,0,0,0,0,0,2,0},
 			{0,0,0,0,0,0,2,0},
+			{1,1,1,1,1,1,1,1},
+		},
+		{
+			{1,1,1,1,1,1,1,1},
+			{0,2,0,1,0,2,0,0},
+			{0,2,1,1,1,2,0,0},
+			{0,2,0,0,0,2,0,0},
+			{0,1,1,1,1,2,0,0},
+			{0,0,0,0,0,2,0,0},
+			{0,0,0,0,0,2,0,0},
 			{1,1,1,1,1,1,1,1},
 		},
 		{
@@ -423,17 +435,21 @@ end
 function lutro.load()
 	camera_x = 0
 	camera_y = 0
-	lutro.graphics.setBackgroundColor(20, 20, 32)
+	lutro.graphics.setBackgroundColor(17, 17, 12)
 	tileset = lutro.graphics.newImage("assets/tileset.png")
+	bg = lutro.graphics.newImage("assets/bg.png")
 	bg0 = lutro.graphics.newImage("assets/bg0.png")
 	bg1 = lutro.graphics.newImage("assets/bg1.png")
+	bg2 = lutro.graphics.newImage("assets/bg2.png")
 	font = lutro.graphics.newImageFont("assets/font.png",
 		" abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,!?-+/")
 	lutro.graphics.setFont(font)
 	sfx_gold = lutro.audio.newSource("assets/gold.wav")
 	sfx_vase = lutro.audio.newSource("assets/vase.wav")
+	sfx_treasure = lutro.audio.newSource("assets/treasure.wav")
 	sfx_male_die = lutro.audio.newSource("assets/male_die.wav")
 	sfx_hurt = lutro.audio.newSource("assets/hurt.wav")
+	sfx_coin = lutro.audio.newSource("assets/coin.wav")
 
 	math.randomseed(os.time())
 
@@ -490,6 +506,14 @@ function lutro.load()
 			and math.random(20) == 20 then
 				table.insert(entities, newVase({x = (x-1)*16, y = (y-1)*16}))
 			elseif map[y][x] == 0
+			and map[y+1] and map[y+1][x] == 1
+			and map[y-1] and map[y-1][x] == 1
+			and (map[y][x-1] and map[y][x-1] == 1
+			or map[y][x+1] and map[y][x+1] == 1)
+			then
+				table.insert(entities, newTreasure({x = (x-1)*16, y = (y-1)*16}))
+
+			elseif map[y][x] == 0
 			and map[y+1] and map[y+1][x] == 0
 			and map[y-1] and map[y-1][x] == 1
 			and map[y][x-1] and map[y][x-1] == 1
@@ -532,6 +556,10 @@ function lutro.draw()
 			if plan[my][mx] == 1 or plan[my][mx] == 5 then
 				lutro.graphics.draw(bg0, (mx-1)*128, (my-1)*128)
 			elseif plan[my][mx] == 2 then
+				lutro.graphics.draw(bg1, (mx-1)*128, (my-1)*128)
+			elseif plan[my][mx] == 3 or plan[my][mx] == 4 then
+				lutro.graphics.draw(bg2, (mx-1)*128, (my-1)*128)
+			else
 				lutro.graphics.draw(bg1, (mx-1)*128, (my-1)*128)
 			end
 		end
