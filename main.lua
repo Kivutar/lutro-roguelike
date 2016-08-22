@@ -18,6 +18,7 @@ require "web"
 require "magicarrow"
 require "sparkle"
 require "chandelier"
+require "titlescreen"
 
 function lutro.conf(t)
 	t.width  = SCREEN_WIDTH
@@ -454,6 +455,7 @@ function lutro.load()
 	bg0 = lutro.graphics.newImage("assets/bg0.png")
 	bg1 = lutro.graphics.newImage("assets/bg1.png")
 	bg2 = lutro.graphics.newImage("assets/bg2.png")
+	titlescreen = lutro.graphics.newImage("assets/title.png")
 	font = lutro.graphics.newImageFont("assets/font.png",
 		" abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,!?-+/")
 	lutro.graphics.setFont(font)
@@ -464,9 +466,16 @@ function lutro.load()
 	sfx_hurt = lutro.audio.newSource("assets/hurt.wav")
 	sfx_coin = lutro.audio.newSource("assets/coin.wav")
 	sfx_fkhit = lutro.audio.newSource("assets/fkhit.wav")
+	sfx_select = lutro.audio.newSource("assets/select.wav")
+	sfx_confirm = lutro.audio.newSource("assets/confirm.wav")
+	sfx_wrong = lutro.audio.newSource("assets/wrong.wav")
 
 	math.randomseed(os.time())
 
+	table.insert(entities, newTitlescreen())
+end
+
+function generate_map(charclass)
 	map = {}
 
 	plan = {
@@ -550,7 +559,7 @@ function lutro.load()
 		end
 	end
 
-	character = newCharacter({x=(start[2]-1)*8*16+64-8, y=48})
+	character = newCharacter({x=(start[2]-1)*8*16+64-8, y=48, class=charclass})
 	table.insert(entities, character)
 	lifebar = newLifeBar()
 end
@@ -565,20 +574,23 @@ function lutro.update(dt)
 end
 
 function lutro.draw()
+
 	lutro.graphics.push()
 
 	lutro.graphics.translate(camera_x, camera_y)
 
-	for my=1, 4 do
-		for mx=1, 4 do
-			if plan[my][mx] == 1 or plan[my][mx] == 5 then
-				lutro.graphics.draw(bg0, (mx-1)*128, (my-1)*128)
-			elseif plan[my][mx] == 2 then
-				lutro.graphics.draw(bg1, (mx-1)*128, (my-1)*128)
-			elseif plan[my][mx] == 3 or plan[my][mx] == 4 then
-				lutro.graphics.draw(bg2, (mx-1)*128, (my-1)*128)
-			else
-				lutro.graphics.draw(bg1, (mx-1)*128, (my-1)*128)
+	if plan then
+		for my=1, 4 do
+			for mx=1, 4 do
+				if plan[my][mx] == 1 or plan[my][mx] == 5 then
+					lutro.graphics.draw(bg0, (mx-1)*128, (my-1)*128)
+				elseif plan[my][mx] == 2 then
+					lutro.graphics.draw(bg1, (mx-1)*128, (my-1)*128)
+				elseif plan[my][mx] == 3 or plan[my][mx] == 4 then
+					lutro.graphics.draw(bg2, (mx-1)*128, (my-1)*128)
+				else
+					lutro.graphics.draw(bg1, (mx-1)*128, (my-1)*128)
+				end
 			end
 		end
 	end
@@ -591,7 +603,9 @@ function lutro.draw()
 
 	lutro.graphics.pop()
 
-	lifebar:draw()
+	if lifebar then
+		lifebar:draw()
+	end
 
 	-- for my=1, 4 do
 	-- 	for mx=1, 4 do

@@ -22,7 +22,6 @@ function newCharacter(n)
 	n.speedlimit = 1
 	n.using_lader = false
 	n.sword = nil
-	n.class = "enchanter"
 	if n.class == "knight" then
 		n.hp = 5
 		n.oldhp = 5
