@@ -27,7 +27,7 @@ function vase:draw()
 end
 
 function vase:on_collide(e1, e2, dx, dy)
-	if e2.type == "sword" then
+	if e2.type == "sword" or e2.type == "magicarrow" then
 		if self.stance == "normal" then
 			lutro.audio.play(sfx_vase)
 			for i=0, math.random(0, 1) do

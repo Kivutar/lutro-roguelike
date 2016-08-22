@@ -15,6 +15,9 @@ require "treasure"
 require "blood"
 require "coin"
 require "web"
+require "magicarrow"
+require "sparkle"
+require "chandelier"
 
 function lutro.conf(t)
 	t.width  = SCREEN_WIDTH
@@ -369,6 +372,16 @@ blocks = {
 			{1,1,0,0,0,0,1,1},
 			{1,1,0,1,1,0,1,1},
 		},
+		{
+			{1,1,0,0,0,2,1,1},
+			{1,1,1,1,1,2,1,1},
+			{0,0,0,1,1,2,1,1},
+			{0,0,0,0,0,2,0,0},
+			{0,0,0,0,0,2,0,0},
+			{1,1,1,1,1,1,1,1},
+			{1,1,0,0,0,0,1,1},
+			{1,1,0,1,1,0,1,1},
+		},
 	},
 	{ -- end
 		{
@@ -450,6 +463,7 @@ function lutro.load()
 	sfx_male_die = lutro.audio.newSource("assets/male_die.wav")
 	sfx_hurt = lutro.audio.newSource("assets/hurt.wav")
 	sfx_coin = lutro.audio.newSource("assets/coin.wav")
+	sfx_fkhit = lutro.audio.newSource("assets/fkhit.wav")
 
 	math.randomseed(os.time())
 
@@ -502,9 +516,13 @@ function lutro.load()
 			and map[y+1] and map[y+1][x] == 1
 			and map[y-1] and map[y-1][x] == 0
 			and map[y][x-1] and map[y][x-1] == 0
-			and map[y][x+1] and map[y][x+1] == 0
-			and math.random(20) == 20 then
-				table.insert(entities, newVase({x = (x-1)*16, y = (y-1)*16}))
+			and map[y][x+1] and map[y][x+1] == 0 then
+				local r = math.random(20)
+				if r == 20 then
+					table.insert(entities, newVase({x = (x-1)*16, y = (y-1)*16}))
+				elseif r == 19 then
+					table.insert(entities, newChandelier({x = (x-1)*16, y = (y-1)*16}))
+				end
 			elseif map[y][x] == 0
 			and map[y+1] and map[y+1][x] == 1
 			and map[y-1] and map[y-1][x] == 1

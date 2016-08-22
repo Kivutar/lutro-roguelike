@@ -29,9 +29,9 @@ function newFatknight(n)
 		},
 		hit = {
 			left  = newAnimation(lutro.graphics.newImage(
-				"assets/fatknight_stand_left.png"),  96, 64, 2, 10),
+				"assets/fatknight_hit_left.png"),  96, 64, 2, 60),
 			right = newAnimation(lutro.graphics.newImage(
-				"assets/fatknight_stand_right.png"), 96, 64, 2, 10)
+				"assets/fatknight_hit_right.png"), 96, 64, 2, 60)
 		},
 		run = {
 			left  = newAnimation(lutro.graphics.newImage(
@@ -93,7 +93,7 @@ function fatknight:update(dt)
 		self.behavior = "follow"
 	end
 
-	if distance > 128 and self.HIT == 0 and self.ATTACKING == 0 then
+	if distance > 256 and self.HIT == 0 and self.ATTACKING == 0 then
 		self.behavior = "sleeping"
 	end
 
@@ -116,13 +116,13 @@ function fatknight:update(dt)
 		lutro.audio.play(self.sfx.sword)
 	end
 
-	if self.behavior == "follow" then
+	if self.behavior == "follow" and self.HIT == 0 then
 		if dX > 0 then
 			self.direction = "left"
-			self.xspeed = -0.5
+			self.xspeed = -0.75
 		else
 			self.direction = "right"
-			self.xspeed = 0.5
+			self.xspeed = 0.75
 		end
 	end
 
@@ -202,9 +202,21 @@ function fatknight:on_collide(e1, e2, dx, dy)
 			self.x = self.x + dx
 		end
 	elseif e2.type == "sword" and self.HIT == 0 then
+		lutro.audio.play(sfx_fkhit)
+		self.behavior = "follow"
 		self.HIT = 32
 		self.ATTACKING = 0
 		if character.x < self.x then
+			self.xspeed = 2
+		else
+			self.xspeed = -2
+		end
+	elseif e2.type == "magicarrow" and self.HIT == 0 then
+		lutro.audio.play(sfx_fkhit)
+		self.behavior = "follow"
+		self.HIT = 32
+		self.ATTACKING = 0
+		if e2.direction == "right" then
 			self.xspeed = 2
 		else
 			self.xspeed = -2

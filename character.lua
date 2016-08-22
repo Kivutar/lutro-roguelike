@@ -33,6 +33,7 @@ function newCharacter(n)
 		n.maxhp = 3
 	end
 	n.HIT = 0
+	n.t = 0
 
 	n.animations = {
 		knight = {
@@ -150,6 +151,8 @@ function newCharacter(n)
 	}
 
 	n.anim = n.animations[n.class][n.stance][n.direction]
+	n.dotanim = newAnimation(lutro.graphics.newImage(
+		"assets/dot.png"), 3, 3, 1, 30)
 	n.sfx = {
 		jump = lutro.audio.newSource("assets/jump.wav"),
 		step = lutro.audio.newSource("assets/step.wav"),
@@ -217,14 +220,18 @@ function character:update(dt)
 			self.A_RELEASE = 1
 			self.ATTACKING = 24
 
-			for i=1, #entities do
-				if entities[i] == self.sword then
-					table.remove(entities, i)
+			if self.class == "knight" then
+				for i=1, #entities do
+					if entities[i] == self.sword then
+						table.remove(entities, i)
+					end
 				end
-			end
 
-			self.sword = newSword({holder = self})
-			table.insert(entities, self.sword)
+				self.sword = newSword({holder = self})
+				table.insert(entities, self.sword)
+			elseif self.class == "enchanter" then
+				table.insert(entities, newMagicarrow({holder = self}))
+			end
 
 			lutro.audio.play(self.sfx.sword)
 		end
@@ -368,6 +375,7 @@ function character:update(dt)
 	self.anim = anim;
 
 	self.anim:update(dt)
+	self.dotanim:update(dt)
 
 	-- camera
 	new_camera_x = - self.x + SCREEN_WIDTH/2 - self.width/2
@@ -402,10 +410,42 @@ function character:update(dt)
 		lutro.audio.play(sfx_male_die)
 	end
 	self.oldhp = self.hp
+
+	self.t = self.t + 0.05
 end
 
 function character:draw()
 	self.anim:draw(self.x-16-2, self.y-16)
+
+	local ox = -7
+	if self.direction == "left" then
+		ox = 18
+	end
+
+	if self.A_PRESS > 16 then
+		for i=1,8 do
+			local r = math.max(0, 64 - self.A_PRESS*2)
+			local x = math.cos(self.t+i)*r
+			local y = math.sin(self.t+i)*r
+			self.dotanim:draw(self.x+ox+x-1, self.y+10+y-1)
+		end
+	end
+	if self.A_PRESS > 64 then
+		for i=1,12 do
+			local r = math.max(6, 128 - self.A_PRESS)
+			local x = math.cos(self.t+i)*r
+			local y = math.sin(self.t+i)*r
+			self.dotanim:draw(self.x+ox+x-1, self.y+10+y-1)
+		end
+	end
+	if self.A_PRESS > 128 then
+		for i=1,20 do
+			local r = math.max(12, 192 - self.A_PRESS)
+			local x = math.cos(self.t+i)*r
+			local y = math.sin(self.t+i)*r
+			self.dotanim:draw(self.x+ox+x-1, self.y+10+y-1)
+		end
+	end
 end
 
 function character:on_collide(e1, e2, dx, dy)
