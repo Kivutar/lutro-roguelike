@@ -19,7 +19,7 @@ function newCharacter(n)
 	n.A_RELEASE = 0
 	n.OLD_A = 0
 	n.ATTACKING = 0
-	n.speedlimit = 1
+	n.speedlimit = 1.5
 	n.using_lader = false
 	n.sword = nil
 	if n.class == "knight" then
@@ -33,6 +33,7 @@ function newCharacter(n)
 	end
 	n.HIT = 0
 	n.t = 0
+	n.vampirism = 0
 
 	n.animations = {
 		knight = {
@@ -74,9 +75,9 @@ function newCharacter(n)
 			},
 			attack = {
 				left  = newAnimation(lutro.graphics.newImage(
-					"assets/knight_attack_left.png"),  48, 32, 2, 10),
+					"assets/knight_attack_left.png"),  48, 32, 1, 10),
 				right = newAnimation(lutro.graphics.newImage(
-					"assets/knight_attack_right.png"), 48, 32, 2, 10)
+					"assets/knight_attack_right.png"), 48, 32, 1, 10)
 			},
 			lader = {
 				left  = newAnimation(lutro.graphics.newImage(
@@ -171,13 +172,23 @@ function character:attached()
 end
 
 function character:update(dt)
-	local JOY_LEFT  = lutro.input.joypad("left")
-	local JOY_RIGHT = lutro.input.joypad("right")
-	local JOY_UP    = lutro.input.joypad("up")
-	local JOY_DOWN  = lutro.input.joypad("down")
-	local JOY_B     = lutro.input.joypad("b")
-	local JOY_Y     = lutro.input.joypad("y")
-	local JOY_A     = lutro.input.joypad("a")
+	if compat then
+		JOY_LEFT  = lutro.input.joypad("left")
+		JOY_RIGHT = lutro.input.joypad("right")
+		JOY_UP    = lutro.input.joypad("up")
+		JOY_DOWN  = lutro.input.joypad("down")
+		JOY_B     = lutro.input.joypad("b")
+		JOY_Y     = lutro.input.joypad("y")
+		JOY_A     = lutro.input.joypad("a")
+	else
+		JOY_LEFT  = lutro.keyboard.isDown("left")
+		JOY_RIGHT = lutro.keyboard.isDown("right")
+		JOY_UP    = lutro.keyboard.isDown("up")
+		JOY_DOWN  = lutro.keyboard.isDown("down")
+		JOY_B     = lutro.keyboard.isDown("z")
+		JOY_Y     = lutro.keyboard.isDown("a")
+		JOY_A     = lutro.keyboard.isDown("x")
+	end
 
 	self.o2 = self.o2 - 0.05
 
@@ -217,7 +228,7 @@ function character:update(dt)
 	else
 		if self.OLD_A == 1 then
 			self.A_RELEASE = 1
-			self.ATTACKING = 24
+			self.ATTACKING = 32
 
 			if self.class == "knight" then
 				for i=1, #entities do
@@ -240,7 +251,9 @@ function character:update(dt)
 
 	if self.ATTACKING > 0 then
 		self.ATTACKING = self.ATTACKING - 1
-	else
+	end
+	
+	if self.ATTACKING == 16 then
 		for i=1, #entities do
 			if entities[i] == self.sword then
 				table.remove(entities, i)
@@ -254,7 +267,9 @@ function character:update(dt)
 		if self.xspeed < -self.speedlimit then
 			self.xspeed = -self.speedlimit
 		end
-		self.direction = "left";
+		if self.ATTACKING == 0 then
+			self.direction = "left";
+		end
 	end
 
 	if JOY_RIGHT and self.HIT == 0 and self.hp > 0 then
@@ -262,7 +277,9 @@ function character:update(dt)
 		if self.xspeed > self.speedlimit then
 			self.xspeed = self.speedlimit
 		end
-		self.direction = "right";
+		if self.ATTACKING == 0 then
+			self.direction = "right";
+		end
 	end
 
 	if JOY_UP and self:attached() and self.HIT == 0 and self.hp > 0 then
@@ -311,7 +328,7 @@ function character:update(dt)
 		end
 	end
 
-	if self.HIT > 0 or self.hp <= 0 then
+	if self.HIT % 2 == 1 or self.hp <= 0 then
 		table.insert(entities, newBlood({x=self.x+6, y=self.y+8}))
 	end
 
@@ -472,5 +489,9 @@ function character:on_collide(e1, e2, dx, dy)
 		self.yspeed = -2
 		self.hp = self.hp - 3
 		lutro.audio.play(sfx_hurt)
+		screen_shake = 10
+	elseif e2.type == "fatknight" then
+		self.xspeed = 0
+		self.x = self.x + dx
 	end
 end

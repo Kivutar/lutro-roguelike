@@ -30,9 +30,14 @@ function treasure:on_collide(e1, e2, dx, dy)
 	if e2.type == "sword" or e2.type == "magicarrow" then
 		if self.stance == "normal" then
 			lutro.audio.play(sfx_treasure)
-			for i=3, math.random(3,6) do
-				table.insert(entities, newCoin(
-					{x = self.x + self.width/2, y = self.y + self.height / 2}))
+			local r = math.random(1)
+			if r == 2 then
+				for i=3, math.random(3,6) do
+					table.insert(entities, newCoin(
+						{x = self.x + self.width/2, y = self.y + self.height / 2}))
+				end
+			elseif r == 1 then
+				table.insert(entities, newPower({x = self.x, y = self.y}))
 			end
 		end
 		self.stance = "open"

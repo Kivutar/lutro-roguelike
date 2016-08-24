@@ -21,13 +21,20 @@ function newTitlescreen()
 end
 
 function titlescreen:update(dt)
-	local JOY_LEFT  = lutro.input.joypad("left")
-	local JOY_RIGHT = lutro.input.joypad("right")
-	local JOY_B = lutro.input.joypad("b")
+
+	if compat then
+		JOY_LEFT  = lutro.input.joypad("left")
+		JOY_RIGHT = lutro.input.joypad("right")
+		JOY_A = lutro.input.joypad("a")
+	else
+		JOY_LEFT  = love.keyboard.isDown("left")
+		JOY_RIGHT = love.keyboard.isDown("right")
+		JOY_A = love.keyboard.isDown("x")
+	end
 
 	if JOY_LEFT  then GO_LEFT  = GO_LEFT  + 1 else GO_LEFT  = 0 end
 	if JOY_RIGHT then GO_RIGHT = GO_RIGHT + 1 else GO_RIGHT = 0 end
-	if JOY_B     then CONFIRM  = CONFIRM  + 1 else CONFIRM  = 0 end
+	if JOY_A     then CONFIRM  = CONFIRM  + 1 else CONFIRM  = 0 end
 
 	if GO_RIGHT == 1 and self.index < 3 then
 		self.index = self.index + 1

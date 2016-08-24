@@ -1,3 +1,10 @@
+if not lutro then
+	lutro = love
+	compat = false
+else
+	compat = true
+end
+
 require "global"
 require "anim"
 require "character"
@@ -19,6 +26,7 @@ require "magicarrow"
 require "sparkle"
 require "chandelier"
 require "titlescreen"
+require "power"
 
 function lutro.conf(t)
 	t.width  = SCREEN_WIDTH
@@ -447,6 +455,7 @@ function addroom()
 end
 
 function lutro.load()
+	screen_shake = 0
 	camera_x = 0
 	camera_y = 0
 	lutro.graphics.setBackgroundColor(17, 17, 12)
@@ -469,6 +478,11 @@ function lutro.load()
 	sfx_select = lutro.audio.newSource("assets/select.wav")
 	sfx_confirm = lutro.audio.newSource("assets/confirm.wav")
 	sfx_wrong = lutro.audio.newSource("assets/wrong.wav")
+	sfx_power = lutro.audio.newSource("assets/power.wav")
+	sfx_heart = lutro.audio.newSource("assets/heart.wav")
+	sfx_fatknightdie = lutro.audio.newSource("assets/fatknightdie.wav")
+
+	lutro.graphics.setDefaultFilter("nearest", "nearest")
 
 	math.randomseed(os.time())
 
@@ -538,8 +552,10 @@ function generate_map(charclass)
 			and (map[y][x-1] and map[y][x-1] == 1
 			or map[y][x+1] and map[y][x+1] == 1)
 			then
-				table.insert(entities, newTreasure({x = (x-1)*16, y = (y-1)*16}))
-
+				local r = math.random(1)
+				if r == 1 then
+					table.insert(entities, newTreasure({x = (x-1)*16, y = (y-1)*16}))
+				end
 			elseif map[y][x] == 0
 			and map[y+1] and map[y+1][x] == 0
 			and map[y-1] and map[y-1][x] == 1
@@ -571,13 +587,25 @@ function lutro.update(dt)
 		end
 	end
 	detect_collisions()
+
+	if screen_shake > 0 then
+		screen_shake = screen_shake - 1
+	end
 end
 
 function lutro.draw()
 
 	lutro.graphics.push()
 
-	lutro.graphics.translate(camera_x, camera_y)
+	-- Shake camera if hit
+	local shake_x = 0
+	local shake_y = 0
+	if screen_shake > 0 then
+		shake_x = 5*(math.random()-0.5)
+		shake_y = 5*(math.random()-0.5)
+	end
+
+	lutro.graphics.translate(camera_x + shake_x, camera_y + shake_y)
 
 	if plan then
 		for my=1, 4 do

@@ -11,7 +11,6 @@ function newFatknight(n)
 	n.yspeed = 0
 	n.xaccel = 0.5
 	n.yaccel = 0.17
-	n.o2     = 100
 	n.direction = "left"
 	n.stance = "stand"
 	n.ATTACKING = 0
@@ -19,6 +18,8 @@ function newFatknight(n)
 	n.behavior = "sleeping"
 	n.HIT = 0
 	n.sword = nil
+	n.hp = 100
+	n.DIYING = 0
 
 	n.animations = {
 		stand = {
@@ -53,9 +54,9 @@ function newFatknight(n)
 		},
 		attack = {
 			left  = newAnimation(lutro.graphics.newImage(
-				"assets/fatknight_attack_left.png"),  96, 64, 2, 10),
+				"assets/fatknight_attack_left.png"),  96, 64, 3, 10),
 			right = newAnimation(lutro.graphics.newImage(
-				"assets/fatknight_attack_right.png"), 96, 64, 2, 10)
+				"assets/fatknight_attack_right.png"), 96, 64, 3, 10)
 		},
 	}
 
@@ -74,6 +75,23 @@ function fatknight:on_the_ground()
 end
 
 function fatknight:update(dt)
+	if self.hp <= 0 then
+		self.xspeed = 0
+		self.behavior = "sleeping"
+		self.DIYING = self.DIYING + 1
+	end
+
+	if self.DIYING == 1 then
+		lutro.audio.play(sfx_fatknightdie)
+	end
+
+	if self.DIYING == 20 then
+		for i=1, #entities do
+			if entities[i] == self then
+				table.remove(entities, i)
+			end
+		end
+	end
 
 	-- gravity
 	if not self:on_the_ground() then
@@ -89,7 +107,7 @@ function fatknight:update(dt)
     local dY = (self.y + self.height/2) - (character.y + character.height/2)
 	local distance = math.sqrt( ( dX^2 ) + ( dY^2 ) )
 
-	if distance < 96 and self.ATTACKING == 0 and self.HIT == 0 and character.hp > 0 then
+	if distance < 96 and self.ATTACKING == 0 and self.HIT == 0 and self.hp > 0 then
 		self.behavior = "follow"
 	end
 
@@ -97,13 +115,13 @@ function fatknight:update(dt)
 		self.behavior = "sleeping"
 	end
 
-	if distance < 42 and self.HIT == 0 and self.ATTACKING == 0 and character.hp > 0 then
+	if distance < 42 and self.HIT == 0 and self.ATTACKING == 0 and self.hp > 0 then
 		self.behavior = "attacking"
-		self.ATTACKING = 32
+		self.ATTACKING = 70
 		self.xspeed = 0
 	end
 
-	if self.ATTACKING == 14 then
+	if self.ATTACKING == 40 then
 		for i=1, #entities do
 			if entities[i] == self.sword then
 				table.remove(entities, i)
@@ -116,7 +134,15 @@ function fatknight:update(dt)
 		lutro.audio.play(self.sfx.sword)
 	end
 
-	if self.behavior == "follow" and self.HIT == 0 then
+	if self.ATTACKING == 38 then
+		for i=1, #entities do
+			if entities[i] == self.sword then
+				table.remove(entities, i)
+			end
+		end
+	end
+
+	if self.behavior == "follow" and self.HIT == 0 and self.ATTACKING == 0 then
 		if dX > 0 then
 			self.direction = "left"
 			self.xspeed = -0.75
@@ -170,12 +196,6 @@ function fatknight:update(dt)
 
 	if self.ATTACKING > 0 then
 		self.ATTACKING = self.ATTACKING - 1
-	else
-		for i=1, #entities do
-			if entities[i] == self.sword then
-				table.remove(entities, i)
-			end
-		end
 	end
 
 	if self.HIT > 0 then
@@ -211,6 +231,7 @@ function fatknight:on_collide(e1, e2, dx, dy)
 		else
 			self.xspeed = -2
 		end
+		self.hp = self.hp - 18
 	elseif e2.type == "magicarrow" and self.HIT == 0 then
 		lutro.audio.play(sfx_fkhit)
 		self.behavior = "follow"
@@ -221,5 +242,6 @@ function fatknight:on_collide(e1, e2, dx, dy)
 		else
 			self.xspeed = -2
 		end
+		self.hp = self.hp - 6
 	end
 end
