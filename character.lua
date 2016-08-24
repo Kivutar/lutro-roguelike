@@ -172,6 +172,8 @@ function character:attached()
 end
 
 function character:update(dt)
+	local otg = self:on_the_ground()
+
 	if compat then
 		JOY_LEFT  = lutro.input.joypad("left")
 		JOY_RIGHT = lutro.input.joypad("right")
@@ -199,7 +201,7 @@ function character:update(dt)
 	end
 
 	-- gravity
-	if not self:on_the_ground() and not self:attached() and not self.using_lader then
+	if not otg and not self:attached() and not self.using_lader then
 		self.yspeed = self.yspeed + self.yaccel
 		if (self.yspeed > 3) then self.yspeed = 3 end
 		self.y = self.y + self.yspeed
@@ -213,7 +215,7 @@ function character:update(dt)
 	end
 
 	if self.DO_JUMP == 1 then
-		if self:on_the_ground() or self:attached() or self.using_lader then
+		if otg or self:attached() or self.using_lader then
 			self.using_lader = false
 			self.y = self.y - 1
 			self.yspeed = -3
@@ -282,7 +284,7 @@ function character:update(dt)
 		end
 	end
 
-	if JOY_UP and self:attached() and self.HIT == 0 and self.hp > 0 then
+	if JOY_UP and self:attached() and self.HIT == 0 and self.hp > 10 then
 		if self.direction == "right" then
 			self.y = self.y - 1
 			self.yspeed = -2
@@ -300,7 +302,7 @@ function character:update(dt)
 	-- decelerating
 	if  ((not JOY_RIGHT and self.xspeed > 0)
 	or  (not JOY_LEFT  and self.xspeed < 0))
-	and self:on_the_ground()
+	and otg
 	and self.HIT == 0
 	then
 		if self.xspeed > 0 then
@@ -350,7 +352,7 @@ function character:update(dt)
 	end
 
 	-- animations
-	if self.hp <= 0 and self:on_the_ground() then
+	if self.hp <= 0 and otg then
 		self.stance = "dead"
 	elseif self.HIT > 0 then
 		self.stance = "hit"
@@ -367,7 +369,7 @@ function character:update(dt)
 		if self.A_RELEASE == 1 then
 			self.anim.timer = 4.0
 		end
-	elseif self:on_the_ground() then
+	elseif otg then
 		if self.xspeed == 0 then
 			self.stance = "stand"
 		else
@@ -488,10 +490,19 @@ function character:on_collide(e1, e2, dx, dy)
 		self.y = self.y - 1
 		self.yspeed = -2
 		self.hp = self.hp - 3
+		table.insert(entities, newNotif({x=self.x, y=self.y, text="3", font=fnt_numbers_red}))
 		lutro.audio.play(sfx_hurt)
 		screen_shake = 10
-	elseif e2.type == "fatknight" then
-		self.xspeed = 0
-		self.x = self.x + dx
+	elseif e2.type == "fatknight" and e2.hp > 0 then
+		if math.abs(dy) < math.abs(dx) and dy ~= 0 then
+			self.yspeed = -2
+			self.y = self.y + dy - 1
+			e2.KNOCK = 60
+			e2:cancel_attack()
+			lutro.audio.play(sfx_knock)
+		elseif math.abs(dx) < math.abs(dy) and dx ~= 0 then
+			self.xspeed = 0
+			self.x = self.x + dx
+		end
 	end
 end

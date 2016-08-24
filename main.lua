@@ -27,6 +27,7 @@ require "sparkle"
 require "chandelier"
 require "titlescreen"
 require "power"
+require "notif"
 
 function lutro.conf(t)
 	t.width  = SCREEN_WIDTH
@@ -481,6 +482,13 @@ function lutro.load()
 	sfx_power = lutro.audio.newSource("assets/power.wav")
 	sfx_heart = lutro.audio.newSource("assets/heart.wav")
 	sfx_fatknightdie = lutro.audio.newSource("assets/fatknightdie.wav")
+	sfx_knock = lutro.audio.newSource("assets/knock.wav")
+
+	fnt_numbers = lutro.graphics.newImageFont("assets/numbers.png", "0123456789")
+	fnt_numbers_yellow = lutro.graphics.newImageFont("assets/numbers_yellow.png", "0123456789")
+	fnt_numbers_red = lutro.graphics.newImageFont("assets/numbers_red.png", "0123456789")
+
+	lutro.graphics.setFont(fnt_numbers)
 
 	lutro.graphics.setDefaultFilter("nearest", "nearest")
 

@@ -20,6 +20,7 @@ function newFatknight(n)
 	n.sword = nil
 	n.hp = 100
 	n.DIYING = 0
+	n.KNOCK = 0
 
 	n.animations = {
 		stand = {
@@ -58,6 +59,19 @@ function newFatknight(n)
 			right = newAnimation(lutro.graphics.newImage(
 				"assets/fatknight_attack_right.png"), 96, 64, 3, 10)
 		},
+		dead = {
+			left  = newAnimation(lutro.graphics.newImage(
+				"assets/fatknight_dead_left.png"),  96, 64, 3, 10),
+			right = newAnimation(lutro.graphics.newImage(
+				"assets/fatknight_dead_right.png"), 96, 64, 3, 10)
+		},
+		knock = {
+			left  = newAnimation(lutro.graphics.newImage(
+				"assets/fatknight_knock_left.png"),  96, 64, 3, 10),
+			right = newAnimation(lutro.graphics.newImage(
+				"assets/fatknight_knock_right.png"), 96, 64, 3, 10)
+		},
+
 	}
 
 	n.anim = n.animations[n.stance][n.direction]
@@ -75,26 +89,22 @@ function fatknight:on_the_ground()
 end
 
 function fatknight:update(dt)
-	if self.hp <= 0 then
+	local otg = self:on_the_ground()
+
+	if self.hp <= 0 and otg and self.HIT == 0 then
 		self.xspeed = 0
 		self.behavior = "sleeping"
 		self.DIYING = self.DIYING + 1
 	end
 
 	if self.DIYING == 1 then
-		lutro.audio.play(sfx_fatknightdie)
-	end
-
-	if self.DIYING == 20 then
-		for i=1, #entities do
-			if entities[i] == self then
-				table.remove(entities, i)
-			end
-		end
+		self.height = 16
+		self.y = self.y + 16
+		self.DIYING = self.DIYING + 1
 	end
 
 	-- gravity
-	if not self:on_the_ground() then
+	if not otg then
 		self.yspeed = self.yspeed + self.yaccel
 		if (self.yspeed > 3) then self.yspeed = 3 end
 		self.y = self.y + self.yspeed
@@ -107,15 +117,15 @@ function fatknight:update(dt)
     local dY = (self.y + self.height/2) - (character.y + character.height/2)
 	local distance = math.sqrt( ( dX^2 ) + ( dY^2 ) )
 
-	if distance < 96 and self.ATTACKING == 0 and self.HIT == 0 and self.hp > 0 then
+	if distance < 96 and self.ATTACKING == 0 and self.HIT == 0 and self.hp > 0 and self.KNOCK == 0 and character.hp > 0 then
 		self.behavior = "follow"
 	end
 
-	if distance > 256 and self.HIT == 0 and self.ATTACKING == 0 then
+	if distance > 256 and self.HIT == 0 and self.ATTACKING == 0 and self.KNOCK == 0 then
 		self.behavior = "sleeping"
 	end
 
-	if distance < 42 and self.HIT == 0 and self.ATTACKING == 0 and self.hp > 0 then
+	if distance < 42 and self.HIT == 0 and self.ATTACKING == 0 and self.hp > 0 and self.KNOCK == 0 and character.hp > 0 then
 		self.behavior = "attacking"
 		self.ATTACKING = 70
 		self.xspeed = 0
@@ -167,7 +177,11 @@ function fatknight:update(dt)
 	end
 
 	-- animations
-	if self.HIT > 0 then
+	if self.DIYING > 0 then
+		self.stance = "dead"
+	elseif self.KNOCK > 0 then
+		self.stance = "knock"
+	elseif self.HIT > 0 then
 		self.stance = "hit"
 	elseif self.ATTACKING > 0 then
 		self.stance = "attack"
@@ -201,10 +215,23 @@ function fatknight:update(dt)
 	if self.HIT > 0 then
 		self.HIT = self.HIT - 1
 	end
+
+	if self.KNOCK > 0 then
+		self.KNOCK = self.KNOCK - 1
+	end
 end
 
 function fatknight:draw()
 	self.anim:draw(self.x-32-4, self.y-32)
+end
+
+function fatknight:cancel_attack()
+	self.ATTACKING = 0
+	for i=1, #entities do
+		if entities[i] == self.sword then
+			table.remove(entities, i)
+		end
+	end
 end
 
 function fatknight:on_collide(e1, e2, dx, dy)
@@ -221,27 +248,38 @@ function fatknight:on_collide(e1, e2, dx, dy)
 			self.xspeed = 0
 			self.x = self.x + dx
 		end
-	elseif e2.type == "sword" and self.HIT == 0 then
+	elseif e2.type == "sword" and self.HIT == 0 and self.hp > 0 then
 		lutro.audio.play(sfx_fkhit)
 		self.behavior = "follow"
 		self.HIT = 32
-		self.ATTACKING = 0
+		self:cancel_attack()
 		if character.x < self.x then
 			self.xspeed = 2
 		else
 			self.xspeed = -2
 		end
-		self.hp = self.hp - 18
-	elseif e2.type == "magicarrow" and self.HIT == 0 then
+		local dmg = 18
+		if character.direction == self.direction then
+			dmg = dmg * 1.5
+		end
+		self.hp = self.hp - dmg
+		table.insert(entities, newNotif({x=self.x, y=self.y, text=dmg}))
+		if self.hp <= 0 then
+			lutro.audio.play(sfx_fatknightdie)
+		end
+	elseif e2.type == "magicarrow" and self.HIT == 0 and self.hp > 0 then
 		lutro.audio.play(sfx_fkhit)
 		self.behavior = "follow"
 		self.HIT = 32
-		self.ATTACKING = 0
-		if e2.direction == "right" then
-			self.xspeed = 2
-		else
-			self.xspeed = -2
+		self:cancel_attack()
+		local dmg = 22
+		if character.direction == self.direction then
+			dmg = dmg * 1.5
 		end
-		self.hp = self.hp - 6
+		self.hp = self.hp - dmg
+		table.insert(entities, newNotif({x=self.x, y=self.y, text=dmg}))
+		if self.hp <= 0 then
+			lutro.audio.play(sfx_fatknightdie)
+		end
 	end
 end

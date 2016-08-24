@@ -5,6 +5,7 @@ spikes.__index = spikes
 
 function newSpikes(object)
 	local n = object
+	n.type = "spikes"
 	n.width = 16
 	n.height = 16
 	n.img = lutro.graphics.newImage("assets/spikes.png")
@@ -22,5 +23,6 @@ end
 function spikes:on_collide(e1, e2, dx, dy)
 	if (e2.type == "character" or e2.type == "fatknight") and dy < 0 then
 		e2.hp = 0
+		table.insert(entities, newNotif({x=self.x, y=self.y, text="999", font=fnt_numbers_red}))
 	end
 end

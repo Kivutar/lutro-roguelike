@@ -21,7 +21,7 @@ function lifebar:draw()
 		else
 			heart = self.heart_empty
 		end
-		lutro.graphics.draw(heart, 8 + i * 8, 8)
+		lutro.graphics.draw(heart, i * 8, 8)
 		hp = hp - 1
 	end
 end

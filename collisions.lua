@@ -44,7 +44,7 @@ function solid_at(x, y, exclude)
 	for i = 1, #entities do
 		local e = entities[i];
 
-		if e.type == "ground"
+		if (e.type == "ground" or e.type == "fatknight" and e.hp > 0)
 		and e ~= exclude
 		and x >= e.x and x < e.x + e.width
 		and y >= e.y and y < e.y + e.height
