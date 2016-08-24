@@ -50,7 +50,7 @@ function magicarrow:draw()
 end
 
 function magicarrow:on_collide(e1, e2, dx, dy)
-	if e2.type == "ground" or e2.type == "fatknight" then
+	if e2.type == "ground" or (e2.type == "fatknight" and e2.hp > 0) then
 		--lutro.audio.play(sfx_magicarrow)
 		table.insert(entities, newSparkle({x = self.x-6, y = self.y-6}))
 		for i=1, #entities do

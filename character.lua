@@ -27,9 +27,9 @@ function newCharacter(n)
 		n.oldhp = 5
 		n.maxhp = 5
 	elseif n.class == "enchanter" then
-		n.hp = 3
-		n.oldhp = 3
-		n.maxhp = 3
+		n.hp = 30
+		n.oldhp = 30
+		n.maxhp = 30
 	end
 	n.HIT = 0
 	n.t = 0

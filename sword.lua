@@ -5,6 +5,7 @@ function newSword(object)
 	local n = object
 	n.x = n.holder.x - 14
 	n.y = n.holder.y - 12
+	n.direction = n.holder.direction
 	if n.holder.direction == "right" then
 		n.x = n.holder.x + 6
 	end

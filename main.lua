@@ -42,7 +42,7 @@ blocks = {
 			{0,0,0,0,0,0,0,0},
 			{0,0,0,0,0,0,0,0},
 			{0,0,0,1,1,0,0,0},
-			{0,0,0,1,1,0,2,0},
+			{0,0,4,1,1,0,2,0},
 			{0,0,1,1,1,1,2,0},
 			{1,1,1,0,0,0,2,0},
 		},
@@ -54,7 +54,7 @@ blocks = {
 			{0,0,1,1,1,1,2,0},
 			{0,0,1,1,1,1,2,0},
 			{0,0,0,0,0,0,2,0},
-			{0,0,0,0,0,0,2,0},
+			{0,4,0,0,0,0,2,0},
 		},
 		{
 			{0,0,0,0,0,0,1,1},
@@ -64,7 +64,7 @@ blocks = {
 			{0,2,1,1,1,1,1,0},
 			{0,2,1,1,1,1,1,0},
 			{0,2,0,0,0,0,0,0},
-			{0,2,0,0,0,0,0,0},
+			{0,2,0,0,4,0,0,0},
 		},
 	},
 	{ -- corridor
@@ -483,6 +483,7 @@ function lutro.load()
 	sfx_heart = lutro.audio.newSource("assets/heart.wav")
 	sfx_fatknightdie = lutro.audio.newSource("assets/fatknightdie.wav")
 	sfx_knock = lutro.audio.newSource("assets/knock.wav")
+	sfx_shield = lutro.audio.newSource("assets/shield.wav")
 
 	fnt_numbers = lutro.graphics.newImageFont("assets/numbers.png", "0123456789")
 	fnt_numbers_yellow = lutro.graphics.newImageFont("assets/numbers_yellow.png", "0123456789")
