@@ -81,11 +81,7 @@ function newFatknight(n)
 	}
 
 	n.anim = n.animations[n.stance][n.direction]
-	n.sfx = {
-		jump = lutro.audio.newSource("assets/jump.wav"),
-		step = lutro.audio.newSource("assets/step.wav"),
-		sword = lutro.audio.newSource("assets/sword.wav"),
-	}
+
 	return setmetatable(n, fatknight)
 end
 
@@ -103,12 +99,6 @@ function fatknight:update(dt)
 		self.DIYING = self.DIYING + 1
 	end
 
-	if self.DIYING == 1 then
-		self.height = 16
-		self.y = self.y + 16
-		self.DIYING = self.DIYING + 1
-	end
-
 	-- gravity
 	if not otg then
 		self.yspeed = self.yspeed + self.yaccel
@@ -120,7 +110,7 @@ function fatknight:update(dt)
 	self.x = self.x + self.xspeed;
 
 	local dX = (self.x + self.width/2) - (character.x + character.width/2)
-    local dY = (self.y + self.height/2) - (character.y + character.height/2)
+	local dY = (self.y + self.height/2) - (character.y + character.height/2)
 	local distance = math.sqrt( ( dX^2 ) + ( dY^2 ) )
 
 	if distance < 96 and self.ATTACKING == 0 and self.HIT == 0 and self.GUARD == 0
@@ -150,7 +140,7 @@ function fatknight:update(dt)
 		self.sword = newFatknightsword({holder = self})
 		table.insert(entities, self.sword)
 
-		lutro.audio.play(self.sfx.sword)
+		lutro.audio.play(sfx_sword)
 	end
 
 	if self.ATTACKING == 38 then
@@ -205,8 +195,8 @@ function fatknight:update(dt)
 	else
 		if self.yspeed > 0 then
 			self.stance = "fall"
-		else
-			self.stance = "jump"
+		-- else
+		-- 	self.stance = "jump"
 		end
 	end
 
@@ -255,7 +245,7 @@ function fatknight:on_collide(e1, e2, dx, dy)
 			self.yspeed = 0
 			self.y = self.y + dy
 			if dy < -1 and not self.using_lader then
-				lutro.audio.play(self.sfx.step)
+				lutro.audio.play(sfx_step)
 			end
 		end
 

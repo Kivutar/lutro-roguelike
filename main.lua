@@ -28,6 +28,8 @@ require "chandelier"
 require "titlescreen"
 require "power"
 require "notif"
+require "door"
+require "fly"
 
 function lutro.conf(t)
 	t.width  = SCREEN_WIDTH
@@ -42,7 +44,7 @@ blocks = {
 			{0,0,0,0,0,0,0,0},
 			{0,0,0,0,0,0,0,0},
 			{0,0,0,1,1,0,0,0},
-			{0,0,4,1,1,0,2,0},
+			{0,0,0,1,1,0,2,0},
 			{0,0,1,1,1,1,2,0},
 			{1,1,1,0,0,0,2,0},
 		},
@@ -54,7 +56,7 @@ blocks = {
 			{0,0,1,1,1,1,2,0},
 			{0,0,1,1,1,1,2,0},
 			{0,0,0,0,0,0,2,0},
-			{0,4,0,0,0,0,2,0},
+			{0,0,0,0,0,0,2,0},
 		},
 		{
 			{0,0,0,0,0,0,1,1},
@@ -64,7 +66,7 @@ blocks = {
 			{0,2,1,1,1,1,1,0},
 			{0,2,1,1,1,1,1,0},
 			{0,2,0,0,0,0,0,0},
-			{0,2,0,0,4,0,0,0},
+			{0,2,0,0,0,0,0,0},
 		},
 	},
 	{ -- corridor
@@ -76,6 +78,36 @@ blocks = {
 			{0,0,0,4,0,0,0,0},
 			{0,0,0,0,0,0,0,0},
 			{1,1,1,1,1,1,1,1},
+			{1,1,1,1,1,1,1,1},
+		},
+		{
+			{0,0,0,0,0,0,0,0},
+			{0,0,0,0,0,0,0,0},
+			{0,0,0,4,0,0,0,0},
+			{0,0,0,0,0,0,0,0},
+			{0,0,1,1,1,1,0,0},
+			{0,0,0,0,0,0,0,0},
+			{0,0,0,0,0,0,0,0},
+			{1,1,1,1,1,1,1,1},
+		},
+		{
+			{0,0,0,0,0,0,0,0},
+			{0,0,1,1,1,1,0,0},
+			{0,0,0,0,0,0,0,0},
+			{0,2,0,0,0,0,2,0},
+			{0,2,1,1,1,1,2,0},
+			{0,2,0,0,0,0,2,0},
+			{0,2,0,0,0,0,2,0},
+			{1,1,1,1,1,1,1,1},
+		},
+		{
+			{0,0,0,0,0,0,0,0},
+			{1,1,1,2,2,1,1,1},
+			{0,0,0,0,0,0,0,0},
+			{0,0,0,0,0,0,0,0},
+			{0,0,0,0,0,0,0,0},
+			{1,1,1,2,2,1,1,1},
+			{0,0,0,0,0,0,0,0},
 			{1,1,1,1,1,1,1,1},
 		},
 		{
@@ -241,6 +273,26 @@ blocks = {
 			{0,0,0,0,0,0,0,0},
 		},
 		{
+			{0,0,0,0,0,0,2,0},
+			{0,0,0,0,0,0,2,0},
+			{0,1,1,1,1,0,2,0},
+			{0,1,0,2,1,0,2,0},
+			{0,1,1,2,1,0,2,0},
+			{0,0,0,2,0,0,2,0},
+			{0,0,0,2,0,0,2,0},
+			{0,0,0,2,0,0,2,0},
+		},
+		{
+			{0,0,0,0,0,0,0,0},
+			{0,0,0,0,0,2,0,0},
+			{0,2,0,0,0,2,0,0},
+			{0,2,0,2,0,2,0,0},
+			{0,2,0,2,0,2,0,0},
+			{0,2,0,2,0,0,0,0},
+			{0,0,0,2,0,0,0,0},
+			{0,0,0,0,0,0,0,0},
+		},
+		{
 			{2,1,0,1,1,0,1,0},
 			{2,1,0,0,0,0,1,0},
 			{2,1,0,0,0,0,1,0},
@@ -316,6 +368,16 @@ blocks = {
 			{1,0,2,1,1,0,0,1},
 			{0,0,2,1,1,0,0,0},
 			{0,0,2,1,1,0,0,0},
+			{1,1,2,1,1,0,1,1},
+			{1,1,2,1,1,0,1,1},
+			{1,1,2,0,0,0,1,1},
+		},
+		{
+			{1,1,2,0,0,0,1,1},
+			{1,1,2,1,1,0,1,1},
+			{1,0,2,1,1,0,0,1},
+			{0,0,2,1,1,0,0,0},
+			{0,0,2,0,1,0,0,0},
 			{1,1,2,1,1,0,1,1},
 			{1,1,2,1,1,0,1,1},
 			{1,1,2,0,0,0,1,1},
@@ -397,7 +459,7 @@ blocks = {
 		{
 			{1,1,0,0,0,0,1,1},
 			{1,1,0,0,0,0,1,1},
-			{0,0,0,0,0,0,0,0},
+			{0,0,0,6,0,0,0,0},
 			{0,0,0,0,0,0,0,0},
 			{0,0,0,1,1,0,0,0},
 			{0,0,1,1,1,1,0,0},
@@ -407,11 +469,31 @@ blocks = {
 		{
 			{1,1,1,1,1,1,1,1},
 			{1,1,1,1,1,1,1,1},
-			{0,0,0,0,0,0,0,0},
+			{0,0,0,6,0,0,0,0},
 			{0,0,0,0,0,0,0,0},
 			{0,0,1,1,1,0,0,0},
 			{0,0,1,1,1,0,0,0},
 			{1,1,1,1,1,1,1,1},
+			{1,1,1,1,1,1,1,1},
+		},
+		{
+			{1,1,1,1,1,1,1,1},
+			{0,0,0,0,0,0,0,0},
+			{0,0,0,6,0,0,0,0},
+			{0,0,0,0,0,0,0,0},
+			{0,0,0,1,1,0,0,0},
+			{0,0,1,1,1,1,0,0},
+			{0,0,1,1,1,1,0,0},
+			{1,1,1,1,1,1,1,1},
+		},
+		{
+			{1,1,1,1,1,1,1,1},
+			{0,0,0,0,0,0,0,0},
+			{0,0,0,6,0,0,0,0},
+			{0,0,0,0,0,0,0,0},
+			{0,0,0,1,1,0,0,0},
+			{0,0,1,1,1,1,0,0},
+			{3,3,1,1,1,1,3,3},
 			{1,1,1,1,1,1,1,1},
 		},
 	},
@@ -421,12 +503,6 @@ function addroom()
 	for my=1, 4 do
 		for mx=1, 4 do
 			rand = math.random(5)
-			--print("current is [" .. current[2] .. "," .. current[1].. "] and rand is " .. rand)
-			-- if     rand == 1 then print("we go left")
-			-- elseif rand == 2 then print("we go right")
-			-- elseif rand == 3 then print("we go down")
-			-- end
-
 			if (rand == 1 or rand == 2) and current[2] > 1 and plan[current[1]][current[2]-1] == 0 then -- left
 				plan[current[1]][current[2]-1] = 2
 				--print("added coridor on the left")
@@ -445,22 +521,21 @@ function addroom()
 				--print("added landing")
 				current = {current[1]+1, current[2]}
 				addroom()
-			--else
-				--print("final room")
-				--plan[current[1]][current[2]] = 5
-				--print("impasse")
-				--addroom()
+			elseif my == 4 then
+				plan[current[1]][current[2]] = 5
 			end
 		end
 	end
 end
 
 function lutro.load()
+	character = nil
 	screen_shake = 0
 	camera_x = 0
 	camera_y = 0
 	lutro.graphics.setBackgroundColor(17, 17, 12)
 	tileset = lutro.graphics.newImage("assets/tileset.png")
+	tileset:setFilter("nearest", "nearest")
 	bg = lutro.graphics.newImage("assets/bg.png")
 	bg0 = lutro.graphics.newImage("assets/bg0.png")
 	bg1 = lutro.graphics.newImage("assets/bg1.png")
@@ -469,6 +544,7 @@ function lutro.load()
 	font = lutro.graphics.newImageFont("assets/font.png",
 		" abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,!?-+/")
 	lutro.graphics.setFont(font)
+
 	sfx_gold = lutro.audio.newSource("assets/gold.wav")
 	sfx_vase = lutro.audio.newSource("assets/vase.wav")
 	sfx_treasure = lutro.audio.newSource("assets/treasure.wav")
@@ -484,6 +560,11 @@ function lutro.load()
 	sfx_fatknightdie = lutro.audio.newSource("assets/fatknightdie.wav")
 	sfx_knock = lutro.audio.newSource("assets/knock.wav")
 	sfx_shield = lutro.audio.newSource("assets/shield.wav")
+	sfx_jump = lutro.audio.newSource("assets/jump.wav")
+	sfx_step = lutro.audio.newSource("assets/step.wav")
+	sfx_sword = lutro.audio.newSource("assets/sword.wav")
+	sfx_fly = lutro.audio.newSource("assets/fly.wav")
+	sfx_flydie = lutro.audio.newSource("assets/flydie.wav")
 
 	fnt_numbers = lutro.graphics.newImageFont("assets/numbers.png", "0123456789")
 	fnt_numbers_yellow = lutro.graphics.newImageFont("assets/numbers_yellow.png", "0123456789")
@@ -498,7 +579,7 @@ function lutro.load()
 	table.insert(entities, newTitlescreen())
 end
 
-function generate_map(charclass)
+function generate_map()
 	map = {}
 
 	plan = {
@@ -513,7 +594,6 @@ function generate_map(charclass)
 	print("first room is [" .. start[2] .. "," .. start[1] .. "]")
 	current = start
 	addroom()
-	--plan[current[2]][current[1]] = 5
 
 	for my=1, 4 do
 		for mx=1, 4 do
@@ -572,6 +652,9 @@ function generate_map(charclass)
 			and map[y][x+1] and map[y][x+1] == 0
 			and math.random(3) == 3 then
 				table.insert(entities, newWeb({x = (x-1)*16, y = (y-1)*16}))
+			elseif map[y][x] == 0
+			and math.random(40) == 40 then
+				table.insert(entities, newFly({x = (x-1)*16, y = (y-1)*16}))
 			elseif map[y][x] == 1 then
 				table.insert(entities, newGround({x = (x-1)*16, y = (y-1)*16, mapx = x, mapy = y}))
 			elseif map[y][x] == 2 then
@@ -580,13 +663,11 @@ function generate_map(charclass)
 				table.insert(entities, newSpikes({x = (x-1)*16, y = (y-1)*16}))
 			elseif map[y][x] == 4 then
 				table.insert(entities, newFatknight({x = (x-1)*16, y = (y-1)*16}))
+			elseif map[y][x] == 6 then
+				table.insert(entities, newDoor({x = (x-1)*16, y = (y-1)*16}))
 			end
 		end
 	end
-
-	character = newCharacter({x=(start[2]-1)*8*16+64-8, y=48, class=charclass})
-	table.insert(entities, character)
-	lifebar = newLifeBar()
 end
 
 function lutro.update(dt)
@@ -603,6 +684,10 @@ function lutro.update(dt)
 end
 
 function lutro.draw()
+
+	lutro.graphics.push()
+
+	lutro.graphics.scale(3)
 
 	lutro.graphics.push()
 
@@ -664,4 +749,6 @@ function lutro.draw()
 	-- 		lutro.graphics.point(mx, my)
 	-- 	end
 	-- end
+
+	lutro.graphics.pop()
 end

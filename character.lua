@@ -27,9 +27,9 @@ function newCharacter(n)
 		n.oldhp = 5
 		n.maxhp = 5
 	elseif n.class == "enchanter" then
-		n.hp = 30
-		n.oldhp = 30
-		n.maxhp = 30
+		n.hp = 3
+		n.oldhp = 3
+		n.maxhp = 3
 	end
 	n.HIT = 0
 	n.t = 0
@@ -153,11 +153,7 @@ function newCharacter(n)
 	n.anim = n.animations[n.class][n.stance][n.direction]
 	n.dotanim = newAnimation(lutro.graphics.newImage(
 		"assets/dot.png"), 3, 3, 1, 30)
-	n.sfx = {
-		jump = lutro.audio.newSource("assets/jump.wav"),
-		step = lutro.audio.newSource("assets/step.wav"),
-		sword = lutro.audio.newSource("assets/sword.wav"),
-	}
+
 	return setmetatable(n, character)
 end
 
@@ -219,12 +215,12 @@ function character:update(dt)
 			self.using_lader = false
 			self.y = self.y - 1
 			self.yspeed = -3
-			lutro.audio.play(self.sfx.jump)
+			lutro.audio.play(sfx_jump)
 		end
 	end
 
 	-- attacking
-	if JOY_A and self.HIT == 0 and self.hp > 0 and self.ATTACKING == 0 then
+	if JOY_A and self.HIT == 0 and self.hp > 0 and self.ATTACKING == 0 and not self.using_lader then
 		self.A_PRESS = self.A_PRESS + 1
 		self.OLD_A = 1
 	else
@@ -245,7 +241,7 @@ function character:update(dt)
 				table.insert(entities, newMagicarrow({holder = self}))
 			end
 
-			lutro.audio.play(self.sfx.sword)
+			lutro.audio.play(sfx_sword)
 		end
 		self.OLD_A = 0
 		self.A_PRESS = 0
@@ -472,7 +468,7 @@ function character:on_collide(e1, e2, dx, dy)
 			self.yspeed = 0
 			self.y = self.y + dy
 			if dy < -1 and not self.using_lader then
-				lutro.audio.play(self.sfx.step)
+				lutro.audio.play(sfx_step)
 			end
 		end
 
@@ -490,6 +486,7 @@ function character:on_collide(e1, e2, dx, dy)
 		self.y = self.y - 1
 		self.yspeed = -2
 		self.hp = self.hp - 3
+		self.using_lader = false
 		table.insert(entities, newNotif({x=self.x, y=self.y, text="3", font=fnt_numbers_red}))
 		lutro.audio.play(sfx_hurt)
 		screen_shake = 10

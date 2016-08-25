@@ -50,6 +50,9 @@ function titlescreen:update(dt)
 		if self.index == 0 or self.index == 2 then
 			lutro.audio.play(sfx_confirm)
 			generate_map(self.classes[self.index])
+			character = newCharacter({x=(start[2]-1)*8*16+64-8, y=48, class=self.classes[self.index]})
+			table.insert(entities, character)
+			lifebar = newLifeBar()
 			for i=1, #entities do
 				if entities[i] == self then
 					table.remove(entities, i)
