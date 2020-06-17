@@ -656,7 +656,7 @@ function generate_map()
 			and math.random(40) == 40 then
 				table.insert(entities, newFly({x = (x-1)*16, y = (y-1)*16}))
 			elseif map[y][x] == 1 then
-				table.insert(entities, newGround({x = (x-1)*16, y = (y-1)*16, mapx = x, mapy = y}))
+				table.insert(solids, newGround({x = (x-1)*16, y = (y-1)*16, mapx = x, mapy = y}))
 			elseif map[y][x] == 2 then
 				table.insert(entities, newLader({x = (x-1)*16, y = (y-1)*16}))
 			elseif map[y][x] == 3 then
@@ -720,6 +720,12 @@ function lutro.draw()
 	for i=1, #entities do
 		if entities[i].draw then
 			entities[i]:draw(dt)
+		end
+	end
+
+	for i=1, #solids do
+		if solids[i].draw then
+			solids[i]:draw(dt)
 		end
 	end
 

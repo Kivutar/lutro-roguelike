@@ -426,6 +426,8 @@ function character:update(dt)
 	self.oldhp = self.hp
 
 	self.t = self.t + 0.05
+
+	solid_collisions(self)
 end
 
 function character:draw()

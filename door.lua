@@ -27,6 +27,7 @@ function door:on_collide(e1, e2, dx, dy)
 
 	if e2.type == "character" and JOY_DOWN then
 		entities = {}
+		solids = {}
 		generate_map()
 		character.x = (start[2]-1)*8*16+64-8
 		character.y = 48

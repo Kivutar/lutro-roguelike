@@ -224,6 +224,8 @@ function fatknight:update(dt)
 	if self.KNOCK > 0 then
 		self.KNOCK = self.KNOCK - 1
 	end
+
+	solid_collisions(self)
 end
 
 function fatknight:draw()
