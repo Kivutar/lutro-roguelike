@@ -11,7 +11,7 @@ function newFly(object)
 	n.yspeed = 0
 	n.behavior = "random"
 	n.anim = newAnimation(lutro.graphics.newImage(
-					"assets/fly.png"), 16, 16, 1, 60)
+					"assets/fly.png"), 16, 16, 2, 10)
 	n.t = 0
 	n.HIT = 0
 

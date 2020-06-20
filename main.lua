@@ -22,6 +22,7 @@ require "treasure"
 require "blood"
 require "coin"
 require "web"
+require "stalag"
 require "magicarrow"
 require "sparkle"
 require "chandelier"
@@ -587,6 +588,11 @@ function generate_map()
 		{0,0,0,0,},
 		{0,0,0,0,},
 		{0,0,0,0,},
+		{0,0,0,0,},
+		{0,0,0,0,},
+		{0,0,0,0,},
+		{0,0,0,0,},
+		
 	}
 	x = math.random(4)
 	plan[1][x] = 1
@@ -595,7 +601,7 @@ function generate_map()
 	current = start
 	addroom()
 
-	for my=1, 4 do
+	for my=1, 8 do
 		for mx=1, 4 do
 			kind = plan[my][mx]
 			if kind == 0 then
@@ -648,10 +654,8 @@ function generate_map()
 			elseif map[y][x] == 0
 			and map[y+1] and map[y+1][x] == 0
 			and map[y-1] and map[y-1][x] == 1
-			and map[y][x-1] and map[y][x-1] == 1
-			and map[y][x+1] and map[y][x+1] == 0
-			and math.random(3) == 3 then
-				table.insert(entities, newWeb({x = (x-1)*16, y = (y-1)*16}))
+			and math.random(2) == 2 then
+				table.insert(entities, newStalag({x = (x-1)*16, y = (y-1)*16}))
 			elseif map[y][x] == 0
 			and math.random(40) == 40 then
 				table.insert(entities, newFly({x = (x-1)*16, y = (y-1)*16}))
@@ -705,13 +709,13 @@ function lutro.draw()
 		for my=1, 4 do
 			for mx=1, 4 do
 				if plan[my][mx] == 1 or plan[my][mx] == 5 then
-					lutro.graphics.draw(bg0, (mx-1)*128, (my-1)*128)
+					lutro.graphics.draw(bg, (mx-1)*128, (my-1)*128)
 				elseif plan[my][mx] == 2 then
-					lutro.graphics.draw(bg1, (mx-1)*128, (my-1)*128)
+					lutro.graphics.draw(bg, (mx-1)*128, (my-1)*128)
 				elseif plan[my][mx] == 3 or plan[my][mx] == 4 then
-					lutro.graphics.draw(bg2, (mx-1)*128, (my-1)*128)
+					lutro.graphics.draw(bg, (mx-1)*128, (my-1)*128)
 				else
-					lutro.graphics.draw(bg1, (mx-1)*128, (my-1)*128)
+					lutro.graphics.draw(bg, (mx-1)*128, (my-1)*128)
 				end
 			end
 		end
