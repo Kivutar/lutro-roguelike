@@ -647,7 +647,6 @@ function generate_map()
 					table.insert(entities, newTreasure({x = (x-1)*16, y = (y-1)*16}))
 				end
 			elseif map[y][x] == 0
-			and map[y+1] and map[y+1][x] == 0
 			and map[y-1] and map[y-1][x] == 1
 			and math.random(2) == 2 then
 				table.insert(effects, newStalag({x = (x-1)*16, y = (y-1)*16}))

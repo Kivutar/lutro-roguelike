@@ -8,14 +8,14 @@ function newStalag(object)
 	n.width = 16
 	n.height = 16
 
-	local rand = math.random(3)
-	if rand == 0 then
+	local rand = math.random(4)
+	if rand == 1 then
 		n.img = lutro.graphics.newImage("assets/stalag0.png")
-	elseif rand == 1 then
-		n.img = lutro.graphics.newImage("assets/stalag1.png")
 	elseif rand == 2 then
-		n.img = lutro.graphics.newImage("assets/stalag2.png")
+		n.img = lutro.graphics.newImage("assets/stalag1.png")
 	elseif rand == 3 then
+		n.img = lutro.graphics.newImage("assets/stalag2.png")
+	elseif rand == 4 then
 		n.img = lutro.graphics.newImage("assets/stalag3.png")
 	end
 
