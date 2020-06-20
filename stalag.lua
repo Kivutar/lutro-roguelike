@@ -1,5 +1,3 @@
-require "collisions"
-
 local stalag = {}
 stalag.__index = stalag
 

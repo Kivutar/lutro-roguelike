@@ -5,7 +5,7 @@ door.__index = door
 
 function newDoor(object)
 	local n = object
-	n.stance = "normal"
+	n.type = "door"
 	n.width = 16
 	n.height = 32
 	n.img = lutro.graphics.newImage("assets/door.png")

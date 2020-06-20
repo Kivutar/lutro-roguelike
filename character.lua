@@ -480,6 +480,8 @@ function character:on_collide(e1, e2, dx, dy)
 			self.xspeed = 0
 			self.x = self.x + dx
 		end
+	elseif e2.type == "bouncer" and self.yspeed > 0 then
+		self.yspeed = -6
 	elseif e2.type == "fatknightsword" and self.HIT == 0 then
 		self.HIT = 32
 		if e2.holder.x < self.x then
