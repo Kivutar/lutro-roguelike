@@ -17,7 +17,7 @@ function newBlood(object)
 end
 
 function blood:on_the_ground()
-	return solid_at(self.x, self.y + 2, self)
+	return solid_at(self.x, self.y + 1, self)
 end
 
 function blood:update(dt)

@@ -495,11 +495,11 @@ end
 function character:on_collide(e1, e2, dx, dy)
 	if e2.type == "ground" then
 		if math.abs(dy) < math.abs(dx) and dy ~= 0 then
-			self.yspeed = 0
-			self.y = self.y + dy
-			if dy < -1 and not self.using_ladder then
+			if self.yspeed > 0 and dy < -0.5 and not self.using_ladder then
 				lutro.audio.play(sfx_step)
 			end
+			self.yspeed = 0
+			self.y = self.y + dy
 		end
 
 		if math.abs(dx) < math.abs(dy) and dx ~= 0 then
@@ -508,11 +508,11 @@ function character:on_collide(e1, e2, dx, dy)
 		end
 	elseif e2.type == "bridge" and self.yspeed > 0 and self.y+14 < e2.y then
 		if math.abs(dy) < math.abs(dx) and dy ~= 0 then
-			self.yspeed = 0
-			self.y = self.y + dy
-			if dy < -1 and not self.using_ladder then
+			if self.yspeed > 0 and dy < -0.5 and not self.using_ladder then
 				lutro.audio.play(sfx_step)
 			end
+			self.yspeed = 0
+			self.y = self.y + dy
 		end
 	elseif e2.type == "bouncer" and self.yspeed > 0 then
 		self.yspeed = -6
