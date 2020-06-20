@@ -246,7 +246,7 @@ function fatknight:on_collide(e1, e2, dx, dy)
 		if math.abs(dy) < math.abs(dx) and dy ~= 0 then
 			self.yspeed = 0
 			self.y = self.y + dy
-			if dy < -1 and not self.using_lader then
+			if dy < -1 and not self.using_ladder then
 				lutro.audio.play(sfx_step)
 			end
 		end

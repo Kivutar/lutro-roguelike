@@ -20,7 +20,7 @@ function newCharacter(n)
 	n.OLD_A = 0
 	n.ATTACKING = 0
 	n.speedlimit = 1.5
-	n.using_lader = false
+	n.using_ladder = false
 	n.sword = nil
 	if n.class == "knight" then
 		n.hp = 5
@@ -79,11 +79,11 @@ function newCharacter(n)
 				right = newAnimation(lutro.graphics.newImage(
 					"assets/knight_attack_right.png"), 48, 32, 1, 10)
 			},
-			lader = {
+			ladder = {
 				left  = newAnimation(lutro.graphics.newImage(
-					"assets/knight_lader_left.png"),  48, 32, 2, 10),
+					"assets/knight_ladder_left.png"),  48, 32, 2, 10),
 				right = newAnimation(lutro.graphics.newImage(
-					"assets/knight_lader_right.png"), 48, 32, 2, 10)
+					"assets/knight_ladder_right.png"), 48, 32, 2, 10)
 			},
 			dead = {
 				left  = newAnimation(lutro.graphics.newImage(
@@ -135,11 +135,11 @@ function newCharacter(n)
 				right = newAnimation(lutro.graphics.newImage(
 					"assets/enchanter_attack_right.png"), 48, 32, 2, 10)
 			},
-			lader = {
+			ladder = {
 				left  = newAnimation(lutro.graphics.newImage(
-					"assets/enchanter_lader_left.png"),  48, 32, 2, 10),
+					"assets/enchanter_ladder_left.png"),  48, 32, 2, 10),
 				right = newAnimation(lutro.graphics.newImage(
-					"assets/enchanter_lader_right.png"), 48, 32, 2, 10)
+					"assets/enchanter_ladder_right.png"), 48, 32, 2, 10)
 			},
 			dead = {
 				left  = newAnimation(lutro.graphics.newImage(
@@ -197,7 +197,7 @@ function character:update(dt)
 	end
 
 	-- gravity
-	if not otg and not self:attached() and not self.using_lader then
+	if not otg and not self:attached() and not self.using_ladder then
 		self.yspeed = self.yspeed + self.yaccel
 		if (self.yspeed > 3) then self.yspeed = 3 end
 		self.y = self.y + self.yspeed
@@ -210,17 +210,26 @@ function character:update(dt)
 		self.DO_JUMP = 0
 	end
 
-	if self.DO_JUMP == 1 then
-		if otg or self:attached() or self.using_lader then
-			self.using_lader = false
+	if self.DO_JUMP == 1 and not JOY_DOWN then
+		if otg or self:attached() or self.using_ladder then
+			self.using_ladder = false
 			self.y = self.y - 1
 			self.yspeed = -3
 			lutro.audio.play(sfx_jump)
 		end
 	end
 
+	-- jumping down
+	if self.DO_JUMP == 1 and JOY_DOWN then
+		if otg or self:attached() or self.using_ladder then
+			self.using_ladder = false
+			self.y = self.y + 16
+			lutro.audio.play(sfx_jump)
+		end
+	end
+
 	-- attacking
-	if JOY_A and self.HIT == 0 and self.hp > 0 and self.ATTACKING == 0 and not self.using_lader then
+	if JOY_A and self.HIT == 0 and self.hp > 0 and self.ATTACKING == 0 and not self.using_ladder then
 		self.A_PRESS = self.A_PRESS + 1
 		self.OLD_A = 1
 	else
@@ -330,23 +339,23 @@ function character:update(dt)
 		table.insert(effects, newBlood({x=self.x+6, y=self.y+8}))
 	end
 
-	local lader = object_collide(self, "lader")
-	if lader then
+	local ladder = object_collide(self, "ladder")
+	if ladder then
 		if JOY_UP then
-			self.using_lader = true
+			self.using_ladder = true
 			self.y = self.y - 1
 			self.xspeed = 0
-			self.x = lader.x + 2
+			self.x = ladder.x + 2
 			self.yspeed = 0
 		elseif JOY_DOWN then
-			self.using_lader = true
+			self.using_ladder = true
 			self.y = self.y + 1
 			self.xspeed = 0
-			self.x = lader.x + 2
+			self.x = ladder.x + 2
 			self.yspeed = 0
 		end
 	else
-		self.using_lader = false
+		self.using_ladder = false
 	end
 
 	-- animations
@@ -354,8 +363,8 @@ function character:update(dt)
 		self.stance = "dead"
 	elseif self.HIT > 0 then
 		self.stance = "hit"
-	elseif self.using_lader then
-		self.stance = "lader"
+	elseif self.using_ladder then
+		self.stance = "ladder"
 		if not JOY_UP and not JOY_DOWN then
 			self.anim.timer = 0.0
 		end
@@ -471,7 +480,7 @@ function character:on_collide(e1, e2, dx, dy)
 		if math.abs(dy) < math.abs(dx) and dy ~= 0 then
 			self.yspeed = 0
 			self.y = self.y + dy
-			if dy < -1 and not self.using_lader then
+			if dy < -1 and not self.using_ladder then
 				lutro.audio.play(sfx_step)
 			end
 		end
@@ -479,6 +488,14 @@ function character:on_collide(e1, e2, dx, dy)
 		if math.abs(dx) < math.abs(dy) and dx ~= 0 then
 			self.xspeed = 0
 			self.x = self.x + dx
+		end
+	elseif e2.type == "bridge" and self.yspeed > 0 and self.y + 16 < e2.y then
+		if math.abs(dy) < math.abs(dx) and dy ~= 0 then
+			self.yspeed = 0
+			self.y = self.y + dy
+			if dy < -1 and not self.using_ladder then
+				lutro.audio.play(sfx_step)
+			end
 		end
 	elseif e2.type == "bouncer" and self.yspeed > 0 then
 		self.yspeed = -6
@@ -492,7 +509,7 @@ function character:on_collide(e1, e2, dx, dy)
 		self.y = self.y - 1
 		self.yspeed = -2
 		self.hp = self.hp - 3
-		self.using_lader = false
+		self.using_ladder = false
 		table.insert(effects, newNotif({x=self.x, y=self.y, text="3", font=fnt_numbers_red}))
 		lutro.audio.play(sfx_hurt)
 		screen_shake = 10

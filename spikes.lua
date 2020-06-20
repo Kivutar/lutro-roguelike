@@ -7,7 +7,7 @@ function newSpikes(object)
 	local n = object
 	n.type = "spikes"
 	n.width = 16
-	n.height = 16
+	n.height = 8
 	n.img = lutro.graphics.newImage("assets/spikes.png")
 
 	return setmetatable(n, spikes)
@@ -17,7 +17,7 @@ function spikes:update(dt)
 end
 
 function spikes:draw()
-	lutro.graphics.draw(self.img, self.x, self.y)
+	lutro.graphics.draw(self.img, self.x, self.y-8)
 end
 
 function spikes:on_collide(e1, e2, dx, dy)

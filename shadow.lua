@@ -3,6 +3,7 @@ shadow.__index = shadow
 
 function newShadow(object)
 	local n = object
+	n.type = "shadow"
 	n.width = 16
 	n.height = 16
 	n.img = lutro.graphics.newImage("assets/shadow.png")
