@@ -58,6 +58,8 @@ function titlescreen:update(dt)
 					table.remove(entities, i)
 				end
 			end
+			camera_x = - character.x + SCREEN_WIDTH/2 - character.width/2
+			camera_y = - character.y + SCREEN_HEIGHT/2 - character.height/2
 		else
 			lutro.audio.play(sfx_wrong)
 		end
