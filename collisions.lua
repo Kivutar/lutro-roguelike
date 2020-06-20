@@ -90,6 +90,36 @@ function solid_at(x, y, exclude)
 	return false;
 end
 
+function ground_at(x, y, exclude)
+	for i = 1, #solids do
+		local e = solids[i];
+
+		if (e.type == "ground")
+		and e ~= exclude
+		and x >= e.x and x < e.x + e.width
+		and y >= e.y and y < e.y + e.height
+		then
+			return true;
+		end
+	end
+	return false;
+end
+
+function bridge_at(x, y, exclude)
+	for i = 1, #solids do
+		local e = solids[i];
+
+		if (e.type == "bridge")
+		and e ~= exclude
+		and x >= e.x and x < e.x + e.width
+		and y >= e.y and y < e.y + e.height
+		then
+			return true;
+		end
+	end
+	return false;
+end
+
 function object_collide(entity, type)
 	for i = 1, #entities do
 		for j = 1, #entities do

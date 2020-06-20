@@ -162,13 +162,19 @@ function character:on_the_ground()
 		or solid_at(self.x + 11, self.y + 16, self)
 end
 
+function character:on_a_bridge()
+	return bridge_at(self.x + 4, self.y + 16, self)
+		or bridge_at(self.x + 11, self.y + 16, self)
+end
+
 function character:attached()
-	return (self.direction == "right" and solid_at(self.x + 15, self.y, self) and not solid_at(self.x + 15, self.y -1, self))
-	    or (self.direction == "left"  and solid_at(self.x -  1, self.y, self) and not solid_at(self.x -  1, self.y -1, self))
+	return (self.direction == "right" and ground_at(self.x + 15, self.y, self) and not ground_at(self.x + 15, self.y -1, self))
+	    or (self.direction == "left"  and ground_at(self.x -  1, self.y, self) and not ground_at(self.x -  1, self.y -1, self))
 end
 
 function character:update(dt)
 	local otg = self:on_the_ground()
+	local oab = self:on_a_bridge()
 
 	if compat then
 		JOY_LEFT  = lutro.input.joypad("left")
@@ -212,7 +218,6 @@ function character:update(dt)
 
 	if self.DO_JUMP == 1 and not JOY_DOWN then
 		if otg or self:attached() or self.using_ladder then
-			self.using_ladder = false
 			self.y = self.y - 1
 			self.yspeed = -3
 			lutro.audio.play(sfx_jump)
@@ -221,11 +226,14 @@ function character:update(dt)
 
 	-- jumping down
 	if self.DO_JUMP == 1 and JOY_DOWN then
-		if otg or self:attached() or self.using_ladder then
-			self.using_ladder = false
+		if oab or self:attached() then
 			self.y = self.y + 16
 			lutro.audio.play(sfx_jump)
 		end
+	end
+
+	if self.DO_JUMP == 1 then
+		self.using_ladder = false
 	end
 
 	-- attacking
@@ -353,10 +361,15 @@ function character:update(dt)
 			self.xspeed = 0
 			self.x = ladder.x + 2
 			self.yspeed = 0
+			if otg then
+				self.using_ladder = false
+			end
 		end
 	else
 		self.using_ladder = false
 	end
+
+
 
 	-- animations
 	if self.hp <= 0 and otg then
@@ -489,7 +502,7 @@ function character:on_collide(e1, e2, dx, dy)
 			self.xspeed = 0
 			self.x = self.x + dx
 		end
-	elseif e2.type == "bridge" and self.yspeed > 0 and self.y + 16 < e2.y then
+	elseif e2.type == "bridge" and self.yspeed > 0 and self.y+14 < e2.y then
 		if math.abs(dy) < math.abs(dx) and dy ~= 0 then
 			self.yspeed = 0
 			self.y = self.y + dy
