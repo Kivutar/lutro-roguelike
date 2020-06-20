@@ -349,18 +349,22 @@ function character:update(dt)
 
 	local ladder = object_collide(self, "ladder")
 	if ladder then
-		if JOY_UP then
-			self.using_ladder = true
-			self.y = self.y - 1
-			self.xspeed = 0
-			self.x = ladder.x + 2
-			self.yspeed = 0
+		if JOY_UP and ladder then
+			if oab then
+				self.using_ladder = false
+			else
+				self.using_ladder = true
+				self.y = self.y - 1
+				self.xspeed = 0
+				self.yspeed = 0
+				self.x = ladder.x + 2
+			end
 		elseif JOY_DOWN then
 			self.using_ladder = true
 			self.y = self.y + 1
 			self.xspeed = 0
-			self.x = ladder.x + 2
 			self.yspeed = 0
+			self.x = ladder.x + 2
 			if otg then
 				self.using_ladder = false
 			end

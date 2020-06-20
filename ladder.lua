@@ -5,9 +5,10 @@ ladder.__index = ladder
 
 function newLadder(object)
 	local n = object
+	n.y = n.y -1
 	n.type = "ladder"
 	n.width = 16
-	n.height = 16
+	n.height = 17
 	n.img = lutro.graphics.newImage("assets/ladder.png")
 
 	return setmetatable(n, ladder)

@@ -120,6 +120,21 @@ function bridge_at(x, y, exclude)
 	return false;
 end
 
+function ladder_at(x, y, exclude)
+	for i = 1, #entities do
+		local e = entities[i];
+
+		if (e.type == "ladder")
+		and e ~= exclude
+		and x >= e.x and x < e.x + e.width
+		and y >= e.y and y < e.y + e.height
+		then
+			return true;
+		end
+	end
+	return false;
+end
+
 function object_collide(entity, type)
 	for i = 1, #entities do
 		for j = 1, #entities do
