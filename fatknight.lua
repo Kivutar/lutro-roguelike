@@ -271,7 +271,7 @@ function fatknight:on_collide(e1, e2, dx, dy)
 				dmg = dmg * 1.5
 			end
 			self.hp = self.hp - dmg
-			table.insert(entities, newNotif({x=self.x, y=self.y, text=dmg}))
+			table.insert(effects, newNotif({x=self.x, y=self.y, text=dmg}))
 			if self.hp <= 0 then
 				lutro.audio.play(sfx_fatknightdie)
 			end
@@ -301,7 +301,7 @@ function fatknight:on_collide(e1, e2, dx, dy)
 				dmg = dmg * 1.5
 			end
 			self.hp = self.hp - dmg
-			table.insert(entities, newNotif({x=self.x, y=self.y, text=dmg}))
+			table.insert(effects, newNotif({x=self.x, y=self.y, text=dmg}))
 			if self.hp <= 0 then
 				lutro.audio.play(sfx_fatknightdie)
 			end

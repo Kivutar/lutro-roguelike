@@ -327,7 +327,7 @@ function character:update(dt)
 	end
 
 	if self.HIT % 2 == 1 or self.hp <= 0 then
-		table.insert(entities, newBlood({x=self.x+6, y=self.y+8}))
+		table.insert(effects, newBlood({x=self.x+6, y=self.y+8}))
 	end
 
 	local lader = object_collide(self, "lader")
@@ -337,11 +337,13 @@ function character:update(dt)
 			self.y = self.y - 1
 			self.xspeed = 0
 			self.x = lader.x + 2
+			self.yspeed = 0
 		elseif JOY_DOWN then
 			self.using_lader = true
 			self.y = self.y + 1
 			self.xspeed = 0
 			self.x = lader.x + 2
+			self.yspeed = 0
 		end
 	else
 		self.using_lader = false
@@ -489,7 +491,7 @@ function character:on_collide(e1, e2, dx, dy)
 		self.yspeed = -2
 		self.hp = self.hp - 3
 		self.using_lader = false
-		table.insert(entities, newNotif({x=self.x, y=self.y, text="3", font=fnt_numbers_red}))
+		table.insert(effects, newNotif({x=self.x, y=self.y, text="3", font=fnt_numbers_red}))
 		lutro.audio.play(sfx_hurt)
 		screen_shake = 10
 	elseif e2.type == "fatknight" and e2.hp > 0 then

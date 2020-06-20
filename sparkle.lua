@@ -21,9 +21,9 @@ function sparkle:update(dt)
 	self.anim:update(dt)
 
 	if self.t >= 10 then
-		for i=1, #entities do
-			if entities[i] == self then
-				table.remove(entities, i)
+		for i=1, #effects do
+			if effects[i] == self then
+				table.remove(effects, i)
 			end
 		end
 	end

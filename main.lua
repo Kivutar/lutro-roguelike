@@ -587,12 +587,7 @@ function generate_map()
 		{0,0,0,0,},
 		{0,0,0,0,},
 		{0,0,0,0,},
-		{0,0,0,0,},
-		{0,0,0,0,},
-		{0,0,0,0,},
-		{0,0,0,0,},
-		{0,0,0,0,},
-		
+		{0,0,0,0,},		
 	}
 	x = math.random(4)
 	plan[1][x] = 1
@@ -601,7 +596,7 @@ function generate_map()
 	current = start
 	addroom()
 
-	for my=1, 8 do
+	for my=1, 4 do
 		for mx=1, 4 do
 			kind = plan[my][mx]
 			if kind == 0 then
@@ -655,7 +650,7 @@ function generate_map()
 			and map[y+1] and map[y+1][x] == 0
 			and map[y-1] and map[y-1][x] == 1
 			and math.random(2) == 2 then
-				table.insert(entities, newStalag({x = (x-1)*16, y = (y-1)*16}))
+				table.insert(effects, newStalag({x = (x-1)*16, y = (y-1)*16}))
 			elseif map[y][x] == 0
 			and math.random(40) == 40 then
 				table.insert(entities, newFly({x = (x-1)*16, y = (y-1)*16}))
@@ -680,6 +675,13 @@ function lutro.update(dt)
 			entities[i]:update(dt)
 		end
 	end
+
+	for i=1, #effects do
+		if effects[i] and effects[i].update then
+			effects[i]:update(dt)
+		end
+	end
+
 	detect_collisions()
 
 	if screen_shake > 0 then
@@ -721,15 +723,21 @@ function lutro.draw()
 		end
 	end
 
-	for i=1, #entities do
-		if entities[i].draw then
-			entities[i]:draw(dt)
-		end
-	end
-
 	for i=1, #solids do
 		if solids[i].draw then
 			solids[i]:draw(dt)
+		end
+	end
+
+	for i=1, #effects do
+		if effects[i].draw then
+			effects[i]:draw(dt)
+		end
+	end
+
+	for i=1, #entities do
+		if entities[i].draw then
+			entities[i]:draw(dt)
 		end
 	end
 

@@ -3,5 +3,6 @@ SCREEN_HEIGHT = 240
 
 entities = {}
 solids = {}
+effects = {}
 
 map = {}

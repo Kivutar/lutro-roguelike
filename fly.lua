@@ -62,6 +62,8 @@ function fly:update(dt)
 			end
 		end
 	end
+
+	solid_collisions(self)
 end
 
 function fly:draw()
@@ -88,7 +90,7 @@ function fly:on_collide(e1, e2, dx, dy)
 			self.xspeed = -2
 		end
 		self.behavior = "follow"
-		table.insert(entities, newNotif({x=self.x, y=self.y, text=dmg}))
+		table.insert(effects, newNotif({x=self.x, y=self.y, text=dmg}))
 		lutro.audio.play(sfx_flydie)
 	elseif e2.type == "character" and e2.HIT == 0 and e2.hp > 0 then
 		if self.x < e2.x then

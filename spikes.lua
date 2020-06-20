@@ -24,6 +24,6 @@ function spikes:on_collide(e1, e2, dx, dy)
 	if (e2.type == "character" or e2.type == "fatknight") and e2.yspeed > 0 and e2.hp > 0 then
 		e2.hp = 0
 		e2.xspeed = 0
-		table.insert(entities, newNotif({x=self.x, y=self.y, text="999", font=fnt_numbers_red}))
+		table.insert(effects, newNotif({x=self.x, y=self.y, text="999", font=fnt_numbers_red}))
 	end
 end
