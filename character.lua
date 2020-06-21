@@ -203,11 +203,10 @@ function character:update(dt)
 	end
 
 	-- gravity
-	if not otg and not self:attached() and not self.using_ladder then
-		self.yspeed = self.yspeed + self.yaccel
-		if (self.yspeed > 3) then self.yspeed = 3 end
-		self.y = self.y + self.yspeed
-	end
+	self.yspeed = self.yspeed + self.yaccel
+	if (self.yspeed > 3) then self.yspeed = 3 end
+	if otg or self:attached() or self.using_ladder then self.yspeed = 0 end
+	self.y = self.y + self.yspeed
 
 	-- jumping
 	if JOY_B and self.HIT == 0 and self.hp > 0 then
@@ -532,7 +531,7 @@ function character:on_collide(e1, e2, dx, dy)
 		screen_shake = 10
 	elseif e2.type == "fatknight" and e2.hp > 0 then
 		if math.abs(dy) < math.abs(dx) and dy ~= 0 then
-			self.yspeed = -2
+			self.yspeed = -3
 			self.y = self.y + dy - 1
 			e2.KNOCK = 60
 			e2:cancel_attack()

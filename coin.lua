@@ -26,6 +26,8 @@ function coin:update(dt)
 		self.y = self.y + self.yspeed
 		self.x = self.x + self.xspeed
 	end
+
+	solid_collisions(self)
 end
 
 function coin:draw()
