@@ -158,12 +158,12 @@ function newCharacter(n)
 end
 
 function character:on_the_ground()
-	return solid_at(self.x + 4, self.y + 16, self)
+	return solid_at(self.x + 1, self.y + 16, self)
 		or solid_at(self.x + 11, self.y + 16, self)
 end
 
 function character:on_a_bridge()
-	return bridge_at(self.x + 4, self.y + 16, self)
+	return bridge_at(self.x + 1, self.y + 16, self)
 		or bridge_at(self.x + 11, self.y + 16, self)
 end
 
