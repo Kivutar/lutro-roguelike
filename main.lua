@@ -691,9 +691,6 @@ function lutro.load()
 	tileset = lutro.graphics.newImage("assets/tileset.png")
 	tileset:setFilter("nearest", "nearest")
 	bg = lutro.graphics.newImage("assets/bg.png")
-	bg0 = lutro.graphics.newImage("assets/bg0.png")
-	bg1 = lutro.graphics.newImage("assets/bg1.png")
-	bg2 = lutro.graphics.newImage("assets/bg2.png")
 	titlescreen = lutro.graphics.newImage("assets/title.png")
 	font = lutro.graphics.newImageFont("assets/font.png",
 		" abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,!?-+/")
@@ -906,8 +903,11 @@ function lutro.draw()
 
 	lutro.graphics.pop()
 
-	if lifebar then
-		lifebar:draw()
+	if lifebar1 then
+		lifebar1:draw()
+	end
+	if lifebar2 then
+		lifebar2:draw()
 	end
 
 	-- for my=1, 4 do

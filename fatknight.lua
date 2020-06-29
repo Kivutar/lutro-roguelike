@@ -22,6 +22,7 @@ function newFatknight(n)
 	n.hp = 100
 	n.DIYING = 0
 	n.KNOCK = 0
+	n.target = false
 
 	n.animations = {
 		stand = {
@@ -90,12 +91,19 @@ function fatknight:on_the_ground()
 		or solid_at(self.x + 22, self.y + 32, self)
 end
 
+function fatknight:distance(ch)
+	local dX = (self.x + self.width/2) - (ch.x + ch.width/2)
+	local dY = (self.y + self.height/2) - (ch.y + ch.height/2)
+	return math.sqrt( ( dX^2 ) + ( dY^2 ) )
+end
+
 function fatknight:update(dt)
 	local otg = self:on_the_ground()
 
 	if self.hp <= 0 and otg and self.HIT == 0 then
 		self.xspeed = 0
 		self.behavior = "sleeping"
+		self.target = false
 		self.DIYING = self.DIYING + 1
 	end
 
@@ -109,22 +117,26 @@ function fatknight:update(dt)
 	-- apply speed
 	self.x = self.x + self.xspeed;
 
-	local dX = (self.x + self.width/2) - (character.x + character.width/2)
-	local dY = (self.y + self.height/2) - (character.y + character.height/2)
-	local distance = math.sqrt( ( dX^2 ) + ( dY^2 ) )
-
-	if distance < 96 and self.ATTACKING == 0 and self.HIT == 0 and self.GUARD == 0
-	and self.hp > 0 and self.KNOCK == 0 and character.hp > 0 then
+	if self:distance(character1) < 96 and self.ATTACKING == 0 and self.HIT == 0 and self.GUARD == 0
+	and self.hp > 0 and self.KNOCK == 0 and character1.hp > 0 then
 		self.behavior = "follow"
+		self.target = character1
 	end
 
-	if distance > 256 and self.HIT == 0 and self.GUARD == 0
+	if self:distance(character2) < 96 and self.ATTACKING == 0 and self.HIT == 0 and self.GUARD == 0
+	and self.hp > 0 and self.KNOCK == 0 and character2.hp > 0 then
+		self.behavior = "follow"
+		self.target = character2
+	end
+
+	if self.target and self:distance(self.target) > 256 and self.HIT == 0 and self.GUARD == 0
 	and self.ATTACKING == 0 and self.KNOCK == 0 then
 		self.behavior = "sleeping"
+		self.target = false
 	end
 
-	if distance < 42 and self.HIT == 0 and self.GUARD == 0
-	and self.ATTACKING == 0 and self.hp > 0 and self.KNOCK == 0 and character.hp > 0 then
+	if self.target and self:distance(self.target) < 42 and self.HIT == 0 and self.GUARD == 0
+	and self.ATTACKING == 0 and self.hp > 0 and self.KNOCK == 0 and self.target.hp > 0 then
 		self.behavior = "attacking"
 		self.ATTACKING = 70
 		self.xspeed = 0
@@ -152,7 +164,7 @@ function fatknight:update(dt)
 	end
 
 	if self.behavior == "follow" and self.HIT == 0 and self.GUARD == 0 and self.ATTACKING == 0 then
-		if dX > 0 then
+		if (self.x-self.width/2) - (self.target.x-self.target.width/2) > 0 then
 			self.direction = "left"
 			self.xspeed = -0.75
 		else
@@ -260,14 +272,15 @@ function fatknight:on_collide(e1, e2, dx, dy)
 		if self.direction == e2.direction or math.abs(e2.y-self.y) > 8 then 
 			lutro.audio.play(sfx_fkhit)
 			self.behavior = "follow"
+			self.target = e2.holder
 			self.HIT = 32
 			self:cancel_attack()
-			if character.x < self.x then
+			if self.target.x < self.x then
 				self.xspeed = 2
 			else
 				self.xspeed = -2
 			end
-			if character.direction == self.direction then
+			if self.target.direction == self.direction then
 				dmg = dmg * 1.5
 			end
 			self.hp = self.hp - dmg
@@ -278,7 +291,7 @@ function fatknight:on_collide(e1, e2, dx, dy)
 		else
 			self.GUARD = 16
 			self:cancel_attack()
-			if character.x < self.x then
+			if self.target.x < self.x then
 				self.xspeed = 1
 			else
 				self.xspeed = -1
@@ -290,14 +303,15 @@ function fatknight:on_collide(e1, e2, dx, dy)
 		if self.direction == e2.direction or math.abs(e2.y-self.y) < 16 then 
 			lutro.audio.play(sfx_fkhit)
 			self.behavior = "follow"
+			self.target = e2.holder
 			self.HIT = 32
 			self:cancel_attack()
-			if character.x < self.x then
+			if self.target.x < self.x then
 				self.xspeed = 2
 			else
 				self.xspeed = -2
 			end
-			if character.direction == self.direction then
+			if self.target.direction == self.direction then
 				dmg = dmg * 1.5
 			end
 			self.hp = self.hp - dmg
@@ -308,7 +322,7 @@ function fatknight:on_collide(e1, e2, dx, dy)
 		else
 			self.GUARD = 16
 			self:cancel_attack()
-			if character.x < self.x then
+			if self.target.x < self.x then
 				self.xspeed = 1
 			else
 				self.xspeed = -1

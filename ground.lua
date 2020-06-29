@@ -14,13 +14,13 @@ end
 
 function ground:draw()
 
-	if math.abs(self.x - character.x) > 320 then
-		return
-	end
+	-- if math.abs(self.x - character.x) > 320 then
+	-- 	return
+	-- end
 
-	if math.abs(self.y - character.y) > 240 then
-		return
-	end
+	-- if math.abs(self.y - character.y) > 240 then
+	-- 	return
+	-- end
 
 	-- single
 	if  (map[self.mapy  ] and map[self.mapy  ][self.mapx-1] ~= 1)

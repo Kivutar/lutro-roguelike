@@ -34,6 +34,7 @@ function newCharacter(n)
 	n.HIT = 0
 	n.t = 0
 	n.vampirism = 0
+	n.diedsince = 0
 
 	n.animations = {
 		knight = {
@@ -176,23 +177,13 @@ function character:update(dt)
 	local otg = self:on_the_ground()
 	local oab = self:on_a_bridge()
 
-	if compat then
-		JOY_LEFT  = lutro.input.joypad("left")
-		JOY_RIGHT = lutro.input.joypad("right")
-		JOY_UP    = lutro.input.joypad("up")
-		JOY_DOWN  = lutro.input.joypad("down")
-		JOY_B     = lutro.input.joypad("b")
-		JOY_Y     = lutro.input.joypad("y")
-		JOY_A     = lutro.input.joypad("a")
-	else
-		JOY_LEFT  = lutro.keyboard.isDown("left")
-		JOY_RIGHT = lutro.keyboard.isDown("right")
-		JOY_UP    = lutro.keyboard.isDown("up")
-		JOY_DOWN  = lutro.keyboard.isDown("down")
-		JOY_B     = lutro.keyboard.isDown("z")
-		JOY_Y     = lutro.keyboard.isDown("a")
-		JOY_A     = lutro.keyboard.isDown("x")
-	end
+	local JOY_LEFT  = lutro.joystick.isDown(self.pad, RETRO_DEVICE_ID_JOYPAD_LEFT)
+	local JOY_RIGHT = lutro.joystick.isDown(self.pad, RETRO_DEVICE_ID_JOYPAD_RIGHT)
+	local JOY_UP = lutro.joystick.isDown(self.pad, RETRO_DEVICE_ID_JOYPAD_UP)
+	local JOY_DOWN = lutro.joystick.isDown(self.pad, RETRO_DEVICE_ID_JOYPAD_DOWN)
+	local JOY_B = lutro.joystick.isDown(self.pad, RETRO_DEVICE_ID_JOYPAD_B)
+	local JOY_Y = lutro.joystick.isDown(self.pad, RETRO_DEVICE_ID_JOYPAD_Y)
+	local JOY_A = lutro.joystick.isDown(self.pad, RETRO_DEVICE_ID_JOYPAD_A)
 
 	self.o2 = self.o2 - 0.05
 
@@ -342,8 +333,9 @@ function character:update(dt)
 		end
 	end
 
-	if self.HIT % 2 == 1 or self.hp <= 0 then
+	if self.HIT % 2 == 1 or self.hp <= 0 and self.diedsince < 16 then
 		table.insert(effects, newBlood({x=self.x+6, y=self.y+8}))
+		self.diedsince = self.diedsince + 1
 	end
 
 	local ladder = object_collide(self, "ladder")
@@ -419,24 +411,26 @@ function character:update(dt)
 	self.dotanim:update(dt)
 
 	-- camera
-	new_camera_x = - self.x + SCREEN_WIDTH/2 - self.width/2
-	new_camera_y = - self.y + SCREEN_HEIGHT/2 - self.height/2
-	camera_x = camera_x + (new_camera_x-camera_x) / 10.0;
-	camera_y = camera_y + (new_camera_y-camera_y) / 10.0;
+	if self.hp > 0 then
+		new_camera_x = - self.x + SCREEN_WIDTH/2 - self.width/2
+		new_camera_y = - self.y + SCREEN_HEIGHT/2 - self.height/2
+		camera_x = camera_x + (new_camera_x-camera_x) / 10.0;
+		camera_y = camera_y + (new_camera_y-camera_y) / 10.0;
 
-	if camera_x > 0 then
-		camera_x = 0
-	end
-	if camera_y > 0 then
-		camera_y = 0
-	end
+		if camera_x > 0 then
+			camera_x = 0
+		end
+		if camera_y > 0 then
+			camera_y = 0
+		end
 
-	if camera_x < -(#map[1] * 16) + SCREEN_WIDTH then
-		camera_x = -(#map[1] * 16) + SCREEN_WIDTH
-	end
-	
-	if camera_y < -(#map * 16) + SCREEN_HEIGHT then
-		camera_y = -(#map * 16) + SCREEN_HEIGHT
+		if camera_x < -(#map[1] * 16) + SCREEN_WIDTH then
+			camera_x = -(#map[1] * 16) + SCREEN_WIDTH
+		end
+		
+		if camera_y < -(#map * 16) + SCREEN_HEIGHT then
+			camera_y = -(#map * 16) + SCREEN_HEIGHT
+		end
 	end
 
 	if self.A_RELEASE == 1 then

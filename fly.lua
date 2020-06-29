@@ -14,36 +14,46 @@ function newFly(object)
 					"assets/fly.png"), 16, 16, 2, 10)
 	n.t = 0
 	n.HIT = 0
+	n.target = false
 
 	return setmetatable(n, fly)
+end
+
+function fly:distance(ch)
+	local dX = (self.x + self.width/2) - (ch.x + ch.width/2)
+	local dY = (self.y + self.height/2) - (ch.y + ch.height/2)
+	return math.sqrt( ( dX^2 ) + ( dY^2 ) )
 end
 
 function fly:update(dt)
 	self.t = self.t + 1
 	self.anim:update(dt)
 
-	local dX = (self.x + self.width/2) - (character.x + character.width/2)
-	local dY = (self.y + self.height/2) - (character.y + character.height/2)
-	local distance = math.sqrt( ( dX^2 ) + ( dY^2 ) )
-
-	if distance < 64 and self.behavior == "random" then
+	if self:distance(character1) < 64 and self.behavior == "random" and character1.hp > 0 and not self.target then
 		self.behavior = "follow"
 		lutro.audio.play(sfx_fly)
+		self.target = character1
+	end
+
+	if self:distance(character2) < 64 and self.behavior == "random" and character2.hp > 0 and not self.target then
+		self.behavior = "follow"
+		lutro.audio.play(sfx_fly)
+		self.target = character2
 	end
 
 	if self.behavior == "random" and self.t % 200 == 0 and self.HIT == 0 then
 		self.xspeed = math.random(-0.1, 0.1)
 		self.yspeed = math.random(-0.1, 0.1)
 	elseif self.behavior == "follow" and self.HIT == 0 then
-		if self.x < (character.x+character.width/2-4) then
+		if self.x < (self.target.x+self.target.width/2-4) then
 			self.xspeed = 0.4
 		else
 			self.xspeed = -0.4
 		end
 
-		if self.y < (character.y+character.height/2-4) then
+		if self.y < (self.target.y+self.target.height/2-4) then
 			self.yspeed = 0.4
-		elseif self.y > character.y then
+		elseif self.y > self.target.y then
 			self.yspeed = -0.4
 		end
 	end
@@ -84,7 +94,7 @@ function fly:on_collide(e1, e2, dx, dy)
 	elseif (e2.type == "sword" or e2.type == "magicarrow") and self.HIT == 0 then
 		local dmg = 1
 		self.HIT = 32
-		if character.x < self.x then
+		if e2.x < self.x then
 			self.xspeed = 2
 		else
 			self.xspeed = -2

@@ -21,20 +21,13 @@ function newTitlescreen()
 end
 
 function titlescreen:update(dt)
+	local JOY_1_LEFT  = lutro.joystick.isDown(1, RETRO_DEVICE_ID_JOYPAD_LEFT)
+	local JOY_1_RIGHT = lutro.joystick.isDown(1, RETRO_DEVICE_ID_JOYPAD_RIGHT)
+	local JOY_1_A = lutro.joystick.isDown(1, RETRO_DEVICE_ID_JOYPAD_A)
 
-	if compat then
-		JOY_LEFT  = lutro.input.joypad("left")
-		JOY_RIGHT = lutro.input.joypad("right")
-		JOY_A = lutro.input.joypad("a")
-	else
-		JOY_LEFT  = love.keyboard.isDown("left")
-		JOY_RIGHT = love.keyboard.isDown("right")
-		JOY_A = love.keyboard.isDown("x")
-	end
-
-	if JOY_LEFT  then GO_LEFT  = GO_LEFT  + 1 else GO_LEFT  = 0 end
-	if JOY_RIGHT then GO_RIGHT = GO_RIGHT + 1 else GO_RIGHT = 0 end
-	if JOY_A     then CONFIRM  = CONFIRM  + 1 else CONFIRM  = 0 end
+	if JOY_1_LEFT  then GO_LEFT  = GO_LEFT  + 1 else GO_LEFT  = 0 end
+	if JOY_1_RIGHT then GO_RIGHT = GO_RIGHT + 1 else GO_RIGHT = 0 end
+	if JOY_1_A     then CONFIRM  = CONFIRM  + 1 else CONFIRM  = 0 end
 
 	if GO_RIGHT == 1 and self.index < 3 then
 		self.index = self.index + 1
@@ -50,16 +43,21 @@ function titlescreen:update(dt)
 		if self.index == 0 or self.index == 2 then
 			lutro.audio.play(sfx_confirm)
 			generate_map(self.classes[self.index])
-			character = newCharacter({x=(start[2]-1)*8*16+64-8, y=48, class=self.classes[self.index]})
-			table.insert(entities, character)
-			lifebar = newLifeBar()
+			character1 = newCharacter({x=(start[2]-1)*8*16+64-8, y=48, class=self.classes[self.index], pad=1})
+			character2 = newCharacter({x=(start[2]-1)*8*16+64-8, y=48, class="enchanter", pad=2})
+			table.insert(entities, character1)
+			lifebar1 = newLifeBar({ch = character1, align="left"})
+			if character2 then
+				table.insert(entities, character2)
+				lifebar2 = newLifeBar({ch = character2, align="right"})
+			end
 			for i=1, #entities do
 				if entities[i] == self then
 					table.remove(entities, i)
 				end
 			end
-			camera_x = - character.x + SCREEN_WIDTH/2 - character.width/2
-			camera_y = - character.y + SCREEN_HEIGHT/2 - character.height/2
+			camera_x = - character1.x + SCREEN_WIDTH/2 - character1.width/2
+			camera_y = - character1.y + SCREEN_HEIGHT/2 - character1.height/2
 		else
 			lutro.audio.play(sfx_wrong)
 		end
