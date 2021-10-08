@@ -236,12 +236,7 @@ function character:update(dt)
 			self.ATTACKING = 32
 
 			if self.class == "knight" then
-				for i=1, #entities do
-					if entities[i] == self.sword then
-						table.remove(entities, i)
-					end
-				end
-
+				entities_remove(self.sword)
 				self.sword = newSword({holder = self})
 				table.insert(entities, self.sword)
 			elseif self.class == "enchanter" then
@@ -259,11 +254,7 @@ function character:update(dt)
 	end
 
 	if self.ATTACKING == 16 then
-		for i=1, #entities do
-			if entities[i] == self.sword then
-				table.remove(entities, i)
-			end
-		end
+		entities_remove(self.sword)
 	end
 
 	-- moving

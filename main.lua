@@ -720,6 +720,8 @@ function lutro.load()
 	IMG_blood = lutro.graphics.newImage("assets/blood.png")
 	IMG_bloodground = lutro.graphics.newImage("assets/bloodground.png")
 	IMG_fly = lutro.graphics.newImage("assets/fly.png")
+	IMG_magicarrow_left = lutro.graphics.newImage("assets/magicarrow_left.png")
+	IMG_magicarrow_right = lutro.graphics.newImage("assets/magicarrow_right.png")
 
 	sfx_gold = lutro.audio.newSource("assets/gold.wav")
 	sfx_vase = lutro.audio.newSource("assets/vase.wav")

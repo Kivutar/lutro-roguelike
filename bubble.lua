@@ -45,11 +45,8 @@ function bubble:update(dt)
 	if self.die > 0 then
 		self.die = self.die - 1
 		if self.die <= 0 then
-			for i=1, #entities do
-				if entities[i] == self then
-					table.remove(entities, i)
-				end
-			end
+			entities_remove(self)
+			return
 		end
 	end
 end

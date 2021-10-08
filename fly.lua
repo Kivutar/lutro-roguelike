@@ -65,11 +65,8 @@ function fly:update(dt)
 	end
 
 	if self.HIT == 1 then
-		for i=1, #entities do
-			if entities[i] == self then
-				table.remove(entities, i)
-			end
-		end
+		entities_remove(self)
+		return
 	end
 
 	solid_collisions(self)

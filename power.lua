@@ -45,10 +45,7 @@ function power:on_collide(e1, e2, dx, dy)
 			sfx_heart:play()
 		end
 
-		for i=1, #entities do
-			if entities[i] == self then
-				table.remove(entities, i)
-			end
-		end
+		entities_remove(self)
+		return
 	end
 end

@@ -143,12 +143,7 @@ function fatknight:update(dt)
 	end
 
 	if self.ATTACKING == 40 then
-		for i=1, #entities do
-			if entities[i] == self.sword then
-				table.remove(entities, i)
-			end
-		end
-
+		entities_remove(self.sword)
 		self.sword = newFatknightsword({holder = self})
 		table.insert(entities, self.sword)
 
@@ -156,11 +151,7 @@ function fatknight:update(dt)
 	end
 
 	if self.ATTACKING == 38 then
-		for i=1, #entities do
-			if entities[i] == self.sword then
-				table.remove(entities, i)
-			end
-		end
+		entities_remove(self.sword)
 	end
 
 	if self.behavior == "follow" and self.HIT == 0 and self.GUARD == 0 and self.ATTACKING == 0 then
@@ -246,11 +237,7 @@ end
 
 function fatknight:cancel_attack()
 	self.ATTACKING = 0
-	for i=1, #entities do
-		if entities[i] == self.sword then
-			table.remove(entities, i)
-		end
-	end
+	entities_remove(self.sword)
 end
 
 function fatknight:on_collide(e1, e2, dx, dy)

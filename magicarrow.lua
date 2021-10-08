@@ -13,10 +13,8 @@ function newMagicarrow(object)
 	n.y = n.holder.y+8
 	n.xspeed = 0
 	n.anims = {}
-	n.anims.left = newAnimation(lutro.graphics.newImage(
-		"assets/magicarrow_left.png"), 8, 3, 1, 30)
-	n.anims.right = newAnimation(lutro.graphics.newImage(
-		"assets/magicarrow_right.png"), 8, 3, 1, 30)
+	n.anims.left = newAnimation(IMG_magicarrow_left, 8, 3, 1, 30)
+	n.anims.right = newAnimation(IMG_magicarrow_right, 8, 3, 1, 30)
 	n.anim = n.anims[n.direction]
 	n.t = 0
 
@@ -37,11 +35,8 @@ function magicarrow:update(dt)
 
 	if self.t >= 15 then
 		table.insert(effects, newSparkle({x = self.x-6, y = self.y-6}))
-		for i=1, #entities do
-			if entities[i] == self then
-				table.remove(entities, i)
-			end
-		end
+		entities_remove(self)
+		return
 	end
 
 	solid_collisions(self)
@@ -55,10 +50,7 @@ function magicarrow:on_collide(e1, e2, dx, dy)
 	if e2.type == "ground" or (e2.type == "fatknight" and e2.hp > 0) then
 		-- sfx_magicarrow:play()
 		table.insert(effects, newSparkle({x = self.x-6, y = self.y-6}))
-		for i=1, #entities do
-			if entities[i] == self then
-				table.remove(entities, i)
-			end
-		end
+		entities_remove(self)
+		return
 	end
 end

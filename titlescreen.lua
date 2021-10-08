@@ -51,11 +51,7 @@ function titlescreen:update(dt)
 				table.insert(entities, character2)
 				lifebar2 = newLifeBar({ch = character2, align="right"})
 			end
-			for i=1, #entities do
-				if entities[i] == self then
-					table.remove(entities, i)
-				end
-			end
+			entities_remove(self)
 			camera_x = - character1.x + SCREEN_WIDTH/2 - character1.width/2
 			camera_y = - character1.y + SCREEN_HEIGHT/2 - character1.height/2
 		else
@@ -71,6 +67,3 @@ function titlescreen:draw()
 	self.selecter:draw(80 + self.index*32, 144)
 end
 
-function titlescreen:on_collide(e1, e2, dx, dy)
-
-end

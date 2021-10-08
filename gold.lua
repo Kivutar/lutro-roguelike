@@ -22,10 +22,7 @@ end
 function gold:on_collide(e1, e2, dx, dy)
 	if e2.type == "character" then
 		sfx_gold:play()
-		for i=1, #entities do
-			if entities[i] == self then
-				table.remove(entities, i)
-			end
-		end
+		entities_remove(self)
+		return
 	end
 end

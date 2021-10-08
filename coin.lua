@@ -46,10 +46,7 @@ function coin:on_collide(e1, e2, dx, dy)
 	elseif e2.type == "character" and (e2.xspeed ~= 0 or e2.yspeed ~= 0) then
 		sfx_coin:play()
 		table.insert(effects, newNotif({x=self.x, y=self.y, text="3", font=fnt_numbers_yellow}))
-		for i=1, #entities do
-			if entities[i] == self then
-				table.remove(entities, i)
-			end
-		end
+		entities_remove(self)
+		return
 	end
 end

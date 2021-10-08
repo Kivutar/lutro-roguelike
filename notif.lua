@@ -19,11 +19,7 @@ function notif:update(dt)
 	self.y = self.y + self.yspeed
 
 	if self.yspeed >= 0 then
-		for i=1, #effects do
-			if effects[i] == self then
-				table.remove(effects, i)
-			end
-		end
+		effects_remove(self)
 	end
 end
 
