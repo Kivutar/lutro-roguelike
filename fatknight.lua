@@ -26,58 +26,36 @@ function newFatknight(n)
 
 	n.animations = {
 		stand = {
-			left  = newAnimation(lutro.graphics.newImage(
-				"assets/fatknight_stand_left.png"),  96, 64, 2, 10),
-			right = newAnimation(lutro.graphics.newImage(
-				"assets/fatknight_stand_right.png"), 96, 64, 2, 10)
+			left  = newAnimation(IMG_fatknight_stand_left,  96, 64, 2, 10),
+			right = newAnimation(IMG_fatknight_stand_right, 96, 64, 2, 10)
 		},
 		hit = {
-			left  = newAnimation(lutro.graphics.newImage(
-				"assets/fatknight_hit_left.png"),  96, 64, 2, 60),
-			right = newAnimation(lutro.graphics.newImage(
-				"assets/fatknight_hit_right.png"), 96, 64, 2, 60)
+			left  = newAnimation(IMG_fatknight_hit_left,  96, 64, 2, 60),
+			right = newAnimation(IMG_fatknight_hit_right, 96, 64, 2, 60)
 		},
 		run = {
-			left  = newAnimation(lutro.graphics.newImage(
-				"assets/fatknight_run_left.png"),  96, 64, 1, 10),
-			right = newAnimation(lutro.graphics.newImage(
-				"assets/fatknight_run_right.png"), 96, 64, 1, 10)
+			left  = newAnimation(IMG_fatknight_run_left,  96, 64, 1, 10),
+			right = newAnimation(IMG_fatknight_run_right, 96, 64, 1, 10)
 		},
-		-- jump = {
-		-- 	left  = newAnimation(lutro.graphics.newImage(
-		-- 		"assets/fatknight_jump_left.png"),  48, 32, 1, 10),
-		-- 	right = newAnimation(lutro.graphics.newImage(
-		-- 		"assets/fatknight_jump_right.png"), 48, 32, 1, 10)
-		-- },
 		fall = {
-			left  = newAnimation(lutro.graphics.newImage(
-				"assets/fatknight_fall_left.png"),  96, 64, 1, 10),
-			right = newAnimation(lutro.graphics.newImage(
-				"assets/fatknight_fall_right.png"), 96, 64, 1, 10)
+			left  = newAnimation(IMG_fatknight_fall_left,  96, 64, 1, 10),
+			right = newAnimation(IMG_fatknight_fall_right, 96, 64, 1, 10)
 		},
 		attack = {
-			left  = newAnimation(lutro.graphics.newImage(
-				"assets/fatknight_attack_left.png"),  96, 64, 3, 10),
-			right = newAnimation(lutro.graphics.newImage(
-				"assets/fatknight_attack_right.png"), 96, 64, 3, 10)
+			left  = newAnimation(IMG_fatknight_attack_left,  96, 64, 3, 10),
+			right = newAnimation(IMG_fatknight_attack_right, 96, 64, 3, 10)
 		},
 		dead = {
-			left  = newAnimation(lutro.graphics.newImage(
-				"assets/fatknight_dead_left.png"),  96, 64, 3, 10),
-			right = newAnimation(lutro.graphics.newImage(
-				"assets/fatknight_dead_right.png"), 96, 64, 3, 10)
+			left  = newAnimation(IMG_fatknight_dead_left,  96, 64, 3, 10),
+			right = newAnimation(IMG_fatknight_dead_right, 96, 64, 3, 10)
 		},
 		knock = {
-			left  = newAnimation(lutro.graphics.newImage(
-				"assets/fatknight_knock_left.png"),  96, 64, 3, 10),
-			right = newAnimation(lutro.graphics.newImage(
-				"assets/fatknight_knock_right.png"), 96, 64, 3, 10)
+			left  = newAnimation(IMG_fatknight_knock_left,  96, 64, 3, 10),
+			right = newAnimation(IMG_fatknight_knock_right, 96, 64, 3, 10)
 		},
 		guard = {
-			left  = newAnimation(lutro.graphics.newImage(
-				"assets/fatknight_guard_left.png"),  96, 64, 3, 10),
-			right = newAnimation(lutro.graphics.newImage(
-				"assets/fatknight_guard_right.png"), 96, 64, 3, 10)
+			left  = newAnimation(IMG_fatknight_guard_left,  96, 64, 3, 10),
+			right = newAnimation(IMG_fatknight_guard_right, 96, 64, 3, 10)
 		},
 	}
 

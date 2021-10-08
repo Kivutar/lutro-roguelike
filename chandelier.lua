@@ -8,8 +8,7 @@ function newChandelier(object)
 	n.type = "chandelier"
 	n.width = 16
 	n.height = 16
-	n.anim = newAnimation(lutro.graphics.newImage(
-		"assets/chandelier.png"), 16, 16, 1, 20)
+	n.anim = newAnimation(IMG_chandelier, 16, 16, 1, 20)
 
 	return setmetatable(n, chandelier)
 end

@@ -5,9 +5,7 @@ titlescreen.__index = titlescreen
 
 function newTitlescreen()
 	local n = {}
-	n.bg = lutro.graphics.newImage("assets/title.png")
-	n.selecter = newAnimation(lutro.graphics.newImage(
-		"assets/selecter.png"),  48, 48, 2, 10)
+	n.selecter = newAnimation(IMG_selecter,  48, 48, 2, 10)
 	n.index = 0
 
 	n.classes = {
@@ -63,7 +61,7 @@ function titlescreen:update(dt)
 end
 
 function titlescreen:draw()
-	lutro.graphics.draw(self.bg)
+	lutro.graphics.draw(IMG_title)
 	self.selecter:draw(80 + self.index*32, 144)
 end
 

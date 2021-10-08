@@ -8,11 +8,10 @@ function newBouncer(object)
 	n.type = "bouncer"
 	n.width = 16
 	n.height = 16
-	n.img = lutro.graphics.newImage("assets/bouncer.png")
 
 	return setmetatable(n, bouncer)
 end
 
 function bouncer:draw()
-	lutro.graphics.draw(self.img, self.x, self.y)
+	lutro.graphics.draw(IMG_bouncer, self.x, self.y)
 end

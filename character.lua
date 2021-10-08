@@ -116,8 +116,7 @@ function newCharacter(n)
 	}
 
 	n.anim = n.animations[n.class][n.stance][n.direction]
-	n.dotanim = newAnimation(lutro.graphics.newImage(
-		"assets/dot.png"), 3, 3, 1, 30)
+	n.dotanim = newAnimation(IMG_dot, 3, 3, 1, 30)
 
 	return setmetatable(n, character)
 end
