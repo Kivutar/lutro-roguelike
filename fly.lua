@@ -34,7 +34,7 @@ function fly:update(dt)
 		self.target = character1
 	end
 
-	if self:distance(character2) < 64 and self.behavior == "random" and character2.hp > 0 and not self.target then
+	if character2 and self:distance(character2) < 64 and self.behavior == "random" and character2.hp > 0 and not self.target then
 		self.behavior = "follow"
 		sfx_fly:play()
 		self.target = character2

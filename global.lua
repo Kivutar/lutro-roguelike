@@ -40,4 +40,3 @@ function effects_remove(e)
     end
 end
 
-

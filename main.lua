@@ -773,8 +773,8 @@ function generate_map()
 	current = start
 	addroom()
 
-	for my=1, 4 do
-		for mx=1, 4 do
+	for my=1, #plan do
+		for mx=1, #plan[1] do
 			kind = plan[my][mx]
 			if kind == 0 then
 				kind = 2

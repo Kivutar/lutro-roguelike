@@ -12,9 +12,6 @@ function newSpikes(object)
 	return setmetatable(n, spikes)
 end
 
-function spikes:update(dt)
-end
-
 function spikes:draw()
 	lutro.graphics.draw(IMG_spikes, self.x, self.y-8)
 end

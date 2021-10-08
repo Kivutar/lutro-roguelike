@@ -12,9 +12,6 @@ function newDoor(object)
 	return setmetatable(n, door)
 end
 
-function door:update(dt)
-end
-
 function door:draw()
 	lutro.graphics.draw(IMG_door, self.x, self.y)
 end

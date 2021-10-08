@@ -11,7 +11,7 @@ function newCharacter(n)
 	n.yspeed = 0
 	n.xaccel = 0.5
 	n.yaccel = 0.17
-	n.o2     = 100
+	n.o2 = 100
 	n.direction = "left"
 	n.stance = "fall"
 	n.DO_JUMP = 0
@@ -354,8 +354,6 @@ function character:update(dt)
 	else
 		self.using_ladder = false
 	end
-
-
 
 	-- animations
 	if self.hp <= 0 and otg then

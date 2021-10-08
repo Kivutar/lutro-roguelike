@@ -14,9 +14,6 @@ function newLadder(object)
 	return setmetatable(n, ladder)
 end
 
-function ladder:update(dt)
-end
-
 function ladder:draw()
 	lutro.graphics.draw(self.img, self.x, self.y)
 end

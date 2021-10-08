@@ -12,9 +12,6 @@ function newGold(object)
 	return setmetatable(n, gold)
 end
 
-function gold:update(dt)
-end
-
 function gold:draw()
 	lutro.graphics.draw(self.img, self.x, self.y)
 end

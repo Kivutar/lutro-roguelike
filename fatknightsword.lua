@@ -27,5 +27,3 @@ function fatknightsword:draw()
 	--lutro.graphics.rectangle("fill", self.x, self.y, self.width, self.height)
 end
 
-function fatknightsword:on_collide(e1, e2, dx, dy)
-end

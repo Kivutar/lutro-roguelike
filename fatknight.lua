@@ -123,7 +123,7 @@ function fatknight:update(dt)
 		self.target = character1
 	end
 
-	if self:distance(character2) < 96 and self.ATTACKING == 0 and self.HIT == 0 and self.GUARD == 0
+	if character2 and self:distance(character2) < 96 and self.ATTACKING == 0 and self.HIT == 0 and self.GUARD == 0
 	and self.hp > 0 and self.KNOCK == 0 and character2.hp > 0 then
 		self.behavior = "follow"
 		self.target = character2

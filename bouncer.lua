@@ -13,9 +13,6 @@ function newBouncer(object)
 	return setmetatable(n, bouncer)
 end
 
-function bouncer:update(dt)
-end
-
 function bouncer:draw()
 	lutro.graphics.draw(self.img, self.x, self.y)
 end
