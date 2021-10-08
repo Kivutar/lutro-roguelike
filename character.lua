@@ -210,7 +210,7 @@ function character:update(dt)
 		if otg or self:attached() or self.using_ladder then
 			self.y = self.y - 1
 			self.yspeed = -3
-			lutro.audio.play(sfx_jump)
+			sfx_jump:play()
 		end
 	end
 
@@ -218,7 +218,7 @@ function character:update(dt)
 	if self.DO_JUMP == 1 and JOY_DOWN then
 		if oab or self:attached() then
 			self.y = self.y + 16
-			lutro.audio.play(sfx_jump)
+			sfx_jump:play()
 		end
 	end
 
@@ -248,7 +248,7 @@ function character:update(dt)
 				table.insert(entities, newMagicarrow({holder = self}))
 			end
 
-			lutro.audio.play(sfx_sword)
+			sfx_sword:play()
 		end
 		self.OLD_A = 0
 		self.A_PRESS = 0
@@ -257,7 +257,7 @@ function character:update(dt)
 	if self.ATTACKING > 0 then
 		self.ATTACKING = self.ATTACKING - 1
 	end
-	
+
 	if self.ATTACKING == 16 then
 		for i=1, #entities do
 			if entities[i] == self.sword then
@@ -401,7 +401,7 @@ function character:update(dt)
 	end
 
 	local anim = self.animations[self.class][self.stance][self.direction]
-	-- always animate from first frame 
+	-- always animate from first frame
 	if anim ~= self.anim then
 		anim.timer = 0
 	end
@@ -427,7 +427,7 @@ function character:update(dt)
 		if camera_x < -(#map[1] * 16) + SCREEN_WIDTH then
 			camera_x = -(#map[1] * 16) + SCREEN_WIDTH
 		end
-		
+
 		if camera_y < -(#map * 16) + SCREEN_HEIGHT then
 			camera_y = -(#map * 16) + SCREEN_HEIGHT
 		end
@@ -442,7 +442,7 @@ function character:update(dt)
 	end
 
 	if self.oldhp > 0 and self.hp <= 0 then
-		lutro.audio.play(sfx_male_die)
+		sfx_male_die:play()
 	end
 	self.oldhp = self.hp
 
@@ -489,7 +489,7 @@ function character:on_collide(e1, e2, dx, dy)
 	if e2.type == "ground" then
 		if math.abs(dy) < math.abs(dx) and dy ~= 0 then
 			if self.yspeed > 0 and dy < -0.5 and not self.using_ladder then
-				lutro.audio.play(sfx_step)
+				sfx_step:play()
 			end
 			self.yspeed = 0
 			self.y = self.y + dy
@@ -502,7 +502,7 @@ function character:on_collide(e1, e2, dx, dy)
 	elseif e2.type == "bridge" and self.yspeed > 0 and self.y+14 < e2.y then
 		if math.abs(dy) < math.abs(dx) and dy ~= 0 then
 			if self.yspeed > 0 and dy < -0.5 and not self.using_ladder then
-				lutro.audio.play(sfx_step)
+				sfx_step:play()
 			end
 			self.yspeed = 0
 			self.y = self.y + dy
@@ -521,7 +521,7 @@ function character:on_collide(e1, e2, dx, dy)
 		self.hp = self.hp - 3
 		self.using_ladder = false
 		table.insert(effects, newNotif({x=self.x, y=self.y, text="3", font=fnt_numbers_red}))
-		lutro.audio.play(sfx_hurt)
+		sfx_hurt:play()
 		screen_shake = 10
 	elseif e2.type == "fatknight" and e2.hp > 0 then
 		if math.abs(dy) < math.abs(dx) and dy ~= 0 then
@@ -529,7 +529,7 @@ function character:on_collide(e1, e2, dx, dy)
 			self.y = self.y + dy - 1
 			e2.KNOCK = 60
 			e2:cancel_attack()
-			lutro.audio.play(sfx_knock)
+			sfx_knock:play()
 		elseif math.abs(dx) < math.abs(dy) and dx ~= 0 then
 			self.xspeed = 0
 			self.x = self.x + dx

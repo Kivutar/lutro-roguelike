@@ -44,7 +44,7 @@ function coin:on_collide(e1, e2, dx, dy)
 			self.x = self.x + dx
 		end
 	elseif e2.type == "character" and (e2.xspeed ~= 0 or e2.yspeed ~= 0) then
-		lutro.audio.play(sfx_coin)
+		sfx_coin:play()
 		table.insert(effects, newNotif({x=self.x, y=self.y, text="3", font=fnt_numbers_yellow}))
 		for i=1, #entities do
 			if entities[i] == self then

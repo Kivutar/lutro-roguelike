@@ -29,7 +29,7 @@ end
 function treasure:on_collide(e1, e2, dx, dy)
 	if e2.type == "sword" or e2.type == "magicarrow" then
 		if self.stance == "normal" then
-			lutro.audio.play(sfx_treasure)
+			sfx_treasure:play()
 			local r = math.random(2)
 			if r == 2 then
 				for i=3, math.random(3,6) do

@@ -31,17 +31,17 @@ function titlescreen:update(dt)
 
 	if GO_RIGHT == 1 and self.index < 3 then
 		self.index = self.index + 1
-		lutro.audio.play(sfx_select)
+		sfx_select:play()
 	end
 
 	if GO_LEFT == 1 and self.index > 0 then
 		self.index = self.index - 1
-		lutro.audio.play(sfx_select)
+		sfx_select:play()
 	end
 
 	if CONFIRM == 1 then
 		if self.index == 0 or self.index == 2 then
-			lutro.audio.play(sfx_confirm)
+			sfx_confirm:play()
 			generate_map(self.classes[self.index])
 			character1 = newCharacter({x=(start[2]-1)*8*16+64-8, y=48, class=self.classes[self.index], pad=1})
 			character2 = newCharacter({x=(start[2]-1)*8*16+64-8, y=48, class="enchanter", pad=2})
@@ -59,7 +59,7 @@ function titlescreen:update(dt)
 			camera_x = - character1.x + SCREEN_WIDTH/2 - character1.width/2
 			camera_y = - character1.y + SCREEN_HEIGHT/2 - character1.height/2
 		else
-			lutro.audio.play(sfx_wrong)
+			sfx_wrong:play()
 		end
 	end
 

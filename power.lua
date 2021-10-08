@@ -37,12 +37,12 @@ function power:on_collide(e1, e2, dx, dy)
 	end
 
 	if e2.type == "character" and JOY_DOWN then
-		lutro.audio.play(sfx_power)
+		sfx_power:play()
 
 		if self.index == 3 then
 			e2.maxhp = e2.maxhp + 1
 			e2.hp = e2.hp + 1
-			lutro.audio.play(sfx_heart)
+			sfx_heart:play()
 		end
 
 		for i=1, #entities do

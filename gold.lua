@@ -21,7 +21,7 @@ end
 
 function gold:on_collide(e1, e2, dx, dy)
 	if e2.type == "character" then
-		lutro.audio.play(sfx_gold)
+		sfx_gold:play()
 		for i=1, #entities do
 			if entities[i] == self then
 				table.remove(entities, i)

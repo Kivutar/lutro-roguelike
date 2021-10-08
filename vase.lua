@@ -29,7 +29,7 @@ end
 function vase:on_collide(e1, e2, dx, dy)
 	if e2.type == "sword" or e2.type == "magicarrow" then
 		if self.stance == "normal" then
-			lutro.audio.play(sfx_vase)
+			sfx_vase:play()
 			for i=0, math.random(0, 1) do
 				table.insert(entities, newCoin(
 					{x = self.x + self.width/2, y = self.y + self.height / 2}))

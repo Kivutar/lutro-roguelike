@@ -152,7 +152,7 @@ function fatknight:update(dt)
 		self.sword = newFatknightsword({holder = self})
 		table.insert(entities, self.sword)
 
-		lutro.audio.play(sfx_sword)
+		sfx_sword:play()
 	end
 
 	if self.ATTACKING == 38 then
@@ -213,7 +213,7 @@ function fatknight:update(dt)
 	end
 
 	local anim = self.animations[self.stance][self.direction]
-	-- always animate from first frame 
+	-- always animate from first frame
 	if anim ~= self.anim then
 		anim.timer = 0
 	end
@@ -259,7 +259,7 @@ function fatknight:on_collide(e1, e2, dx, dy)
 			self.yspeed = 0
 			self.y = self.y + dy
 			if dy < -1 and not self.using_ladder then
-				lutro.audio.play(sfx_step)
+				sfx_step:play()
 			end
 		end
 
@@ -269,8 +269,8 @@ function fatknight:on_collide(e1, e2, dx, dy)
 		end
 	elseif e2.type == "sword" and self.HIT == 0 and self.GUARD == 0 and self.hp > 0 then
 		local dmg = 18
-		if self.direction == e2.direction or math.abs(e2.y-self.y) > 8 then 
-			lutro.audio.play(sfx_fkhit)
+		if self.direction == e2.direction or math.abs(e2.y-self.y) > 8 then
+			sfx_fkhit:play()
 			self.behavior = "follow"
 			self.target = e2.holder
 			self.HIT = 32
@@ -286,7 +286,7 @@ function fatknight:on_collide(e1, e2, dx, dy)
 			self.hp = self.hp - dmg
 			table.insert(effects, newNotif({x=self.x, y=self.y, text=dmg}))
 			if self.hp <= 0 then
-				lutro.audio.play(sfx_fatknightdie)
+				sfx_fatknightdie:play()
 			end
 		else
 			self.GUARD = 16
@@ -296,12 +296,12 @@ function fatknight:on_collide(e1, e2, dx, dy)
 			else
 				self.xspeed = -1
 			end
-			lutro.audio.play(sfx_shield)
+			sfx_shield:play()
 		end
 	elseif e2.type == "magicarrow" and self.HIT == 0 and self.GUARD == 0 and self.hp > 0 then
 		local dmg = 22
-		if self.direction == e2.direction or math.abs(e2.y-self.y) < 16 then 
-			lutro.audio.play(sfx_fkhit)
+		if self.direction == e2.direction or math.abs(e2.y-self.y) < 16 then
+			sfx_fkhit:play()
 			self.behavior = "follow"
 			self.target = e2.holder
 			self.HIT = 32
@@ -317,7 +317,7 @@ function fatknight:on_collide(e1, e2, dx, dy)
 			self.hp = self.hp - dmg
 			table.insert(effects, newNotif({x=self.x, y=self.y, text=dmg}))
 			if self.hp <= 0 then
-				lutro.audio.play(sfx_fatknightdie)
+				sfx_fatknightdie:play()
 			end
 		else
 			self.GUARD = 16
@@ -327,7 +327,7 @@ function fatknight:on_collide(e1, e2, dx, dy)
 			else
 				self.xspeed = -1
 			end
-			lutro.audio.play(sfx_shield)
+			sfx_shield:play()
 		end
 	end
 end

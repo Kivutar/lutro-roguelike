@@ -7,6 +7,7 @@ end
 
 require "global"
 require "anim"
+require "slam"
 require "character"
 require "gold"
 require "ladder"
@@ -718,6 +719,7 @@ function lutro.load()
 	IMG_bubble_explode = lutro.graphics.newImage("assets/bubble_explode.png")
 	IMG_blood = lutro.graphics.newImage("assets/blood.png")
 	IMG_bloodground = lutro.graphics.newImage("assets/bloodground.png")
+	IMG_fly = lutro.graphics.newImage("assets/fly.png")
 
 	sfx_gold = lutro.audio.newSource("assets/gold.wav")
 	sfx_vase = lutro.audio.newSource("assets/vase.wav")

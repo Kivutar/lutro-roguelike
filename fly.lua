@@ -10,8 +10,7 @@ function newFly(object)
 	n.xspeed = 0
 	n.yspeed = 0
 	n.behavior = "random"
-	n.anim = newAnimation(lutro.graphics.newImage(
-					"assets/fly.png"), 16, 16, 2, 10)
+	n.anim = newAnimation(IMG_fly, 16, 16, 2, 10)
 	n.t = 0
 	n.HIT = 0
 	n.target = false
@@ -31,13 +30,13 @@ function fly:update(dt)
 
 	if self:distance(character1) < 64 and self.behavior == "random" and character1.hp > 0 and not self.target then
 		self.behavior = "follow"
-		lutro.audio.play(sfx_fly)
+		sfx_fly:play()
 		self.target = character1
 	end
 
 	if self:distance(character2) < 64 and self.behavior == "random" and character2.hp > 0 and not self.target then
 		self.behavior = "follow"
-		lutro.audio.play(sfx_fly)
+		sfx_fly:play()
 		self.target = character2
 	end
 
@@ -101,7 +100,7 @@ function fly:on_collide(e1, e2, dx, dy)
 		end
 		self.behavior = "follow"
 		table.insert(effects, newNotif({x=self.x, y=self.y, text=dmg}))
-		lutro.audio.play(sfx_flydie)
+		sfx_flydie:play()
 	elseif e2.type == "character" and e2.HIT == 0 and e2.hp > 0 then
 		if self.x < e2.x then
 			e2.x = e2.x + 1
