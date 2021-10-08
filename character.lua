@@ -39,114 +39,78 @@ function newCharacter(n)
 	n.animations = {
 		knight = {
 			stand = {
-				left  = newAnimation(lutro.graphics.newImage(
-					"assets/knight_stand_left.png"),  48, 32, 2, 10),
-				right = newAnimation(lutro.graphics.newImage(
-					"assets/knight_stand_right.png"), 48, 32, 2, 10)
+				left  = newAnimation(IMG_knight_stand_left,  48, 32, 2, 10),
+				right = newAnimation(IMG_knight_stand_right, 48, 32, 2, 10)
 			},
 			run = {
-				left  = newAnimation(lutro.graphics.newImage(
-					"assets/knight_run_left.png"),  48, 32, 1, 10),
-				right = newAnimation(lutro.graphics.newImage(
-					"assets/knight_run_right.png"), 48, 32, 1, 10)
+				left  = newAnimation(IMG_knight_run_left,  48, 32, 1, 10),
+				right = newAnimation(IMG_knight_run_right, 48, 32, 1, 10)
 			},
 			jump = {
-				left  = newAnimation(lutro.graphics.newImage(
-					"assets/knight_jump_left.png"),  48, 32, 1, 10),
-				right = newAnimation(lutro.graphics.newImage(
-					"assets/knight_jump_right.png"), 48, 32, 1, 10)
+				left  = newAnimation(IMG_knight_jump_left,  48, 32, 1, 10),
+				right = newAnimation(IMG_knight_jump_right, 48, 32, 1, 10)
 			},
 			fall = {
-				left  = newAnimation(lutro.graphics.newImage(
-					"assets/knight_fall_left.png"),  48, 32, 1, 10),
-				right = newAnimation(lutro.graphics.newImage(
-					"assets/knight_fall_right.png"), 48, 32, 1, 10)
+				left  = newAnimation(IMG_knight_fall_left,  48, 32, 1, 10),
+				right = newAnimation(IMG_knight_fall_right, 48, 32, 1, 10)
 			},
 			attached = {
-				left  = newAnimation(lutro.graphics.newImage(
-					"assets/knight_attached_left.png"),  48, 32, 1, 10),
-				right = newAnimation(lutro.graphics.newImage(
-					"assets/knight_attached_right.png"), 48, 32, 1, 10)
+				left  = newAnimation(IMG_knight_attached_left,  48, 32, 1, 10),
+				right = newAnimation(IMG_knight_attached_right, 48, 32, 1, 10)
 			},
 			hit = {
-				left  = newAnimation(lutro.graphics.newImage(
-					"assets/knight_hit_left.png"),  48, 32, 1, 10),
-				right = newAnimation(lutro.graphics.newImage(
-					"assets/knight_hit_right.png"), 48, 32, 1, 10)
+				left  = newAnimation(IMG_knight_hit_left,  48, 32, 1, 10),
+				right = newAnimation(IMG_knight_hit_right, 48, 32, 1, 10)
 			},
 			attack = {
-				left  = newAnimation(lutro.graphics.newImage(
-					"assets/knight_attack_left.png"),  48, 32, 1, 10),
-				right = newAnimation(lutro.graphics.newImage(
-					"assets/knight_attack_right.png"), 48, 32, 1, 10)
+				left  = newAnimation(IMG_knight_attack_left,  48, 32, 1, 10),
+				right = newAnimation(IMG_knight_attack_right, 48, 32, 1, 10)
 			},
 			ladder = {
-				left  = newAnimation(lutro.graphics.newImage(
-					"assets/knight_ladder_left.png"),  48, 32, 2, 10),
-				right = newAnimation(lutro.graphics.newImage(
-					"assets/knight_ladder_right.png"), 48, 32, 2, 10)
+				left  = newAnimation(IMG_knight_ladder_left,  48, 32, 2, 10),
+				right = newAnimation(IMG_knight_ladder_right, 48, 32, 2, 10)
 			},
 			dead = {
-				left  = newAnimation(lutro.graphics.newImage(
-					"assets/knight_dead_left.png"),  48, 32, 2, 10),
-				right = newAnimation(lutro.graphics.newImage(
-					"assets/knight_dead_right.png"), 48, 32, 2, 10)
+				left  = newAnimation(IMG_knight_dead_left,  48, 32, 2, 10),
+				right = newAnimation(IMG_knight_dead_right, 48, 32, 2, 10)
 			},
 		},
 		enchanter = {
 			stand = {
-				left  = newAnimation(lutro.graphics.newImage(
-					"assets/enchanter_stand_left.png"),  48, 32, 2, 10),
-				right = newAnimation(lutro.graphics.newImage(
-					"assets/enchanter_stand_right.png"), 48, 32, 2, 10)
+				left  = newAnimation(IMG_enchanter_stand_left,  48, 32, 2, 10),
+				right = newAnimation(IMG_enchanter_stand_right, 48, 32, 2, 10)
 			},
 			run = {
-				left  = newAnimation(lutro.graphics.newImage(
-					"assets/enchanter_run_left.png"),  48, 32, 1, 10),
-				right = newAnimation(lutro.graphics.newImage(
-					"assets/enchanter_run_right.png"), 48, 32, 1, 10)
+				left  = newAnimation(IMG_enchanter_run_left,  48, 32, 1, 10),
+				right = newAnimation(IMG_enchanter_run_right, 48, 32, 1, 10)
 			},
 			jump = {
-				left  = newAnimation(lutro.graphics.newImage(
-					"assets/enchanter_jump_left.png"),  48, 32, 1, 10),
-				right = newAnimation(lutro.graphics.newImage(
-					"assets/enchanter_jump_right.png"), 48, 32, 1, 10)
+				left  = newAnimation(IMG_enchanter_jump_left,  48, 32, 1, 10),
+				right = newAnimation(IMG_enchanter_jump_right, 48, 32, 1, 10)
 			},
 			fall = {
-				left  = newAnimation(lutro.graphics.newImage(
-					"assets/enchanter_fall_left.png"),  48, 32, 1, 10),
-				right = newAnimation(lutro.graphics.newImage(
-					"assets/enchanter_fall_right.png"), 48, 32, 1, 10)
+				left  = newAnimation(IMG_enchanter_fall_left,  48, 32, 1, 10),
+				right = newAnimation(IMG_enchanter_fall_right, 48, 32, 1, 10)
 			},
 			attached = {
-				left  = newAnimation(lutro.graphics.newImage(
-					"assets/enchanter_attached_left.png"),  48, 32, 1, 10),
-				right = newAnimation(lutro.graphics.newImage(
-					"assets/enchanter_attached_right.png"), 48, 32, 1, 10)
+				left  = newAnimation(IMG_enchanter_attached_left,  48, 32, 1, 10),
+				right = newAnimation(IMG_enchanter_attached_right, 48, 32, 1, 10)
 			},
 			hit = {
-				left  = newAnimation(lutro.graphics.newImage(
-					"assets/enchanter_hit_left.png"),  48, 32, 1, 10),
-				right = newAnimation(lutro.graphics.newImage(
-					"assets/enchanter_hit_right.png"), 48, 32, 1, 10)
+				left  = newAnimation(IMG_enchanter_hit_left,  48, 32, 1, 10),
+				right = newAnimation(IMG_enchanter_hit_right, 48, 32, 1, 10)
 			},
 			attack = {
-				left  = newAnimation(lutro.graphics.newImage(
-					"assets/enchanter_attack_left.png"),  48, 32, 2, 10),
-				right = newAnimation(lutro.graphics.newImage(
-					"assets/enchanter_attack_right.png"), 48, 32, 2, 10)
+				left  = newAnimation(IMG_enchanter_attack_left,  48, 32, 1, 10),
+				right = newAnimation(IMG_enchanter_attack_right, 48, 32, 1, 10)
 			},
 			ladder = {
-				left  = newAnimation(lutro.graphics.newImage(
-					"assets/enchanter_ladder_left.png"),  48, 32, 2, 10),
-				right = newAnimation(lutro.graphics.newImage(
-					"assets/enchanter_ladder_right.png"), 48, 32, 2, 10)
+				left  = newAnimation(IMG_enchanter_ladder_left,  48, 32, 2, 10),
+				right = newAnimation(IMG_enchanter_ladder_right, 48, 32, 2, 10)
 			},
 			dead = {
-				left  = newAnimation(lutro.graphics.newImage(
-					"assets/enchanter_dead_left.png"),  48, 32, 2, 10),
-				right = newAnimation(lutro.graphics.newImage(
-					"assets/enchanter_dead_right.png"), 48, 32, 2, 10)
+				left  = newAnimation(IMG_enchanter_dead_left,  48, 32, 2, 10),
+				right = newAnimation(IMG_enchanter_dead_right, 48, 32, 2, 10)
 			},
 		},
 	}
