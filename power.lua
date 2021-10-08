@@ -10,10 +10,10 @@ function newPower(object)
 	n.height = 16
 
 	n.imgs = {}
-	n.imgs[1] = lutro.graphics.newImage("assets/vampirecanine.png")
-	n.imgs[2] = lutro.graphics.newImage("assets/potion.png")
-	n.imgs[3] = lutro.graphics.newImage("assets/heart.png")
-	n.imgs[4] = lutro.graphics.newImage("assets/catleg.png")
+	n.imgs[1] = IMG_vampirecanine
+	n.imgs[2] = IMG_potion
+	n.imgs[3] = IMG_heart
+	n.imgs[4] = IMG_catleg
 
 	n.index = math.random(#n.imgs)
 	n.t = 0
