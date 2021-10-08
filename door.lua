@@ -8,7 +8,6 @@ function newDoor(object)
 	n.type = "door"
 	n.width = 16
 	n.height = 32
-	n.img = lutro.graphics.newImage("assets/door.png")
 
 	return setmetatable(n, door)
 end
@@ -17,7 +16,7 @@ function door:update(dt)
 end
 
 function door:draw()
-	lutro.graphics.draw(self.img, self.x, self.y)
+	lutro.graphics.draw(IMG_door, self.x, self.y)
 end
 
 function door:on_collide(e1, e2, dx, dy)

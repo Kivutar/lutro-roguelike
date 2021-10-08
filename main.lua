@@ -696,6 +696,29 @@ function lutro.load()
 		" abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,!?-+/")
 	lutro.graphics.setFont(font)
 
+	IMG_spikes = lutro.graphics.newImage("assets/spikes.png")
+	IMG_sparkle = lutro.graphics.newImage("assets/sparkle.png")
+	IMG_shadow = lutro.graphics.newImage("assets/shadow.png")
+	IMG_heart_full = lutro.graphics.newImage("assets/heart_full.png")
+	IMG_heart_half = lutro.graphics.newImage("assets/heart_half.png")
+	IMG_heart_empty = lutro.graphics.newImage("assets/heart_empty.png")
+	IMG_ladder = lutro.graphics.newImage("assets/ladder.png")
+	IMG_door = lutro.graphics.newImage("assets/door.png")
+	IMG_coin = lutro.graphics.newImage("assets/coin.png")
+	IMG_stalag0 = lutro.graphics.newImage("assets/stalag0.png")
+	IMG_stalag1 = lutro.graphics.newImage("assets/stalag1.png")
+	IMG_stalag2 = lutro.graphics.newImage("assets/stalag2.png")
+	IMG_stalag3 = lutro.graphics.newImage("assets/stalag3.png")
+	IMG_treasure = lutro.graphics.newImage("assets/treasure.png")
+	IMG_treasure_open = lutro.graphics.newImage("assets/treasure_open.png")
+	IMG_vase = lutro.graphics.newImage("assets/vase.png")
+	IMG_vase_broken = lutro.graphics.newImage("assets/vase_broken.png")
+	IMG_web = lutro.graphics.newImage("assets/web.png")
+	IMG_bubble = lutro.graphics.newImage("assets/bubble.png")
+	IMG_bubble_explode = lutro.graphics.newImage("assets/bubble_explode.png")
+	IMG_blood = lutro.graphics.newImage("assets/blood.png")
+	IMG_bloodground = lutro.graphics.newImage("assets/bloodground.png")
+
 	sfx_gold = lutro.audio.newSource("assets/gold.wav")
 	sfx_vase = lutro.audio.newSource("assets/vase.wav")
 	sfx_treasure = lutro.audio.newSource("assets/treasure.wav")
@@ -737,7 +760,7 @@ function generate_map()
 		{0,0,0,0,},
 		{0,0,0,0,},
 		{0,0,0,0,},
-		{0,0,0,0,},		
+		{0,0,0,0,},
 	}
 	x = math.random(4)
 	plan[1][x] = 1
@@ -801,7 +824,7 @@ function generate_map()
 			and map[y+1] and map[y+1][x] == 0 then
 				if math.random(2) == 2 then
 					table.insert(effects, newStalag({x = (x-1)*16, y = (y-1)*16}))
-				else 
+				else
 					table.insert(effects, newShadow({x = (x-1)*16, y = (y-1)*16}))
 				end
 			elseif map[y][x] == 0

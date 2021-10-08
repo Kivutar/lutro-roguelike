@@ -8,13 +8,13 @@ function newStalag(object)
 
 	local rand = math.random(4)
 	if rand == 1 then
-		n.img = lutro.graphics.newImage("assets/stalag0.png")
+		n.img = IMG_stalag0
 	elseif rand == 2 then
-		n.img = lutro.graphics.newImage("assets/stalag1.png")
+		n.img = IMG_stalag1
 	elseif rand == 3 then
-		n.img = lutro.graphics.newImage("assets/stalag2.png")
+		n.img = IMG_stalag2
 	elseif rand == 4 then
-		n.img = lutro.graphics.newImage("assets/stalag3.png")
+		n.img = IMG_stalag3
 	end
 
 	return setmetatable(n, stalag)

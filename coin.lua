@@ -10,7 +10,6 @@ function newCoin(object)
 	n.xspeed = math.random(-4,4)/8.0
 	n.yspeed = -math.random(10)/10.0
 	n.yaccel = 0.1
-	n.img = lutro.graphics.newImage("assets/coin.png")
 
 	return setmetatable(n, coin)
 end
@@ -31,7 +30,7 @@ function coin:update(dt)
 end
 
 function coin:draw()
-	lutro.graphics.draw(self.img, self.x, self.y)
+	lutro.graphics.draw(IMG_coin, self.x, self.y)
 end
 
 function coin:on_collide(e1, e2, dx, dy)

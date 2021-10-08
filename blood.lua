@@ -10,8 +10,6 @@ function newBlood(object)
 	n.xspeed = math.random(-2,2)/4.0
 	n.yspeed = math.random(10)/10.0
 	n.yaccel = 0.1
-	n.img = lutro.graphics.newImage("assets/blood.png")
-	n.imgground = lutro.graphics.newImage("assets/bloodground.png")
 
 	return setmetatable(n, blood)
 end
@@ -33,9 +31,9 @@ end
 
 function blood:draw()
 	if self:on_the_ground() then
-		lutro.graphics.draw(self.imgground, self.x, self.y)
+		lutro.graphics.draw(IMG_bloodground, self.x, self.y)
 	else
-		lutro.graphics.draw(self.img, self.x, self.y)
+		lutro.graphics.draw(IMG_blood, self.x, self.y)
 	end
 end
 

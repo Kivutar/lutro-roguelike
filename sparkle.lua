@@ -8,8 +8,7 @@ function newSparkle(object)
 	n.type = "sparkle"
 	n.width = 16
 	n.height = 16
-	n.anim = newAnimation(lutro.graphics.newImage(
-		"assets/sparkle.png"), 16, 16, 1, 20)
+	n.anim = newAnimation(IMG_sparkle, 16, 16, 1, 20)
 	n.t = 0
 
 	return setmetatable(n, sparkle)

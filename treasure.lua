@@ -10,8 +10,8 @@ function newTreasure(object)
 	n.height = 16
 
 	n.imgs = {}
-	n.imgs.normal = lutro.graphics.newImage("assets/treasure.png")
-	n.imgs.open = lutro.graphics.newImage("assets/treasure_open.png")
+	n.imgs.normal = IMG_treasure
+	n.imgs.open = IMG_treasure_open
 
 	n.img = n.imgs[n.stance]
 

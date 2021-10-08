@@ -28,5 +28,3 @@ function sword:draw()
 	--lutro.graphics.rectangle("fill", self.x, self.y, self.width, self.height)
 end
 
-function sword:on_collide(e1, e2, dx, dy)
-end

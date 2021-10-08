@@ -3,9 +3,6 @@ lifebar.__index = lifebar
 
 function newLifeBar(object)
 	local n = object
-	n.heart_full  = lutro.graphics.newImage("assets/heart_full.png")
-	n.heart_half  = lutro.graphics.newImage("assets/heart_half.png")
-	n.heart_empty = lutro.graphics.newImage("assets/heart_empty.png")
 
 	return setmetatable(n, lifebar)
 end
@@ -15,11 +12,11 @@ function lifebar:draw()
 	for i=1,self.ch.maxhp do
 		local heart
 		if hp >= 1 then
-			heart = self.heart_full
+			heart = IMG_heart_full
 		elseif hp == 0.5 then
-			heart = self.heart_half
+			heart = IMG_heart_half
 		else
-			heart = self.heart_empty
+			heart = IMG_heart_empty
 		end
 		if self.align == "left" then
 			lutro.graphics.draw(heart, i * 8, 8)

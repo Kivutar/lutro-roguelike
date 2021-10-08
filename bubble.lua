@@ -19,8 +19,8 @@ function newBubble(object)
 	n.yaccel = -0.01
 	n.die = -1
 
-	n.img = lutro.graphics.newImage("assets/bubble.png")
-	n.img_explode = lutro.graphics.newImage("assets/bubble_explode.png")
+	n.img = IMG_bubble
+	n.img_explode = IMG_bubble_explode
 
 	return setmetatable(n, bubble)
 end

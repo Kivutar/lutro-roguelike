@@ -9,7 +9,7 @@ function newLadder(object)
 	n.type = "ladder"
 	n.width = 16
 	n.height = 17
-	n.img = lutro.graphics.newImage("assets/ladder.png")
+	n.img = IMG_ladder
 
 	return setmetatable(n, ladder)
 end
@@ -21,5 +21,3 @@ function ladder:draw()
 	lutro.graphics.draw(self.img, self.x, self.y)
 end
 
-function ladder:on_collide(e1, e2, dx, dy)
-end

@@ -10,8 +10,8 @@ function newVase(object)
 	n.height = 16
 
 	n.imgs = {}
-	n.imgs.normal = lutro.graphics.newImage("assets/vase.png")
-	n.imgs.broken = lutro.graphics.newImage("assets/vase_broken.png")
+	n.imgs.normal = IMG_vase
+	n.imgs.broken = IMG_vase_broken
 
 	n.img = n.imgs[n.stance]
 
