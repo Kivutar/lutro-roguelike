@@ -10,10 +10,17 @@ function newFly(object)
 	n.xspeed = 0
 	n.yspeed = 0
 	n.behavior = "random"
-	n.anim = newAnimation(IMG_fly, 16, 16, 2, 10)
 	n.t = 0
 	n.HIT = 0
 	n.target = false
+	n.direction = "left"
+
+	n.animations = {
+		left = newAnimation(IMG_fly_left, 16, 16, 2, 10),
+		right = newAnimation(IMG_fly_right, 16, 16, 2, 10),
+	}
+
+	n.anim = n.animations[n.direction]
 
 	return setmetatable(n, fly)
 end
@@ -26,7 +33,6 @@ end
 
 function fly:update(dt)
 	self.t = self.t + 1
-	self.anim:update(dt)
 
 	if self:distance(character1) < 64 and self.behavior == "random" and character1.hp > 0 and not self.target then
 		self.behavior = "follow"
@@ -43,6 +49,7 @@ function fly:update(dt)
 	if self.behavior == "random" and self.t % 200 == 0 and self.HIT == 0 then
 		self.xspeed = math.random(-0.1, 0.1)
 		self.yspeed = math.random(-0.1, 0.1)
+		if self.xspeed > 0 then self.direction = "right" else self.direction = "left" end
 	elseif self.behavior == "follow" and self.HIT == 0 then
 		if self.x < (self.target.x+self.target.width/2-4) then
 			self.xspeed = 0.4
@@ -55,6 +62,8 @@ function fly:update(dt)
 		elseif self.y > self.target.y then
 			self.yspeed = -0.4
 		end
+
+		if self.xspeed > 0 then self.direction = "right" else self.direction = "left" end
 	end
 
 	self.x = self.x + self.xspeed
@@ -70,6 +79,9 @@ function fly:update(dt)
 	end
 
 	solid_collisions(self)
+
+	self.anim = self.animations[self.direction]
+	self.anim:update(dt)
 end
 
 function fly:draw()

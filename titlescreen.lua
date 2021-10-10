@@ -65,9 +65,8 @@ function titlescreen:update(dt)
 
 	if JOY_1_A or JOY_2_A then sfx_confirm:play() end
 
-	if self.confirm1 == 1 and self.confirm2 == 1 then
+	if self.confirm1 == 1 then
 		if self.index1 == 0 or self.index1 == 2 then
-			sfx_confirm:play()
 			generate_map()
 			character1 = newCharacter({x=(start[2]-1)*8*16+64-8, y=48, class=self.classes[self.index1], pad=1})
 			character2 = newCharacter({x=(start[2]-1)*8*16+64-8, y=48, class=self.classes[self.index2], pad=2})
