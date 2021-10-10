@@ -440,7 +440,7 @@ end
 function character:on_collide(e1, e2, dx, dy)
 	if e2.type == "ground" then
 		if math.abs(dy) < math.abs(dx) and dy ~= 0 then
-			if self.yspeed > 0 and dy < -0.5 and not self.using_ladder then
+			if self.yspeed > 0 and dy < -0 and not self.using_ladder then
 				sfx_step:play()
 			end
 			self.yspeed = 0
@@ -461,6 +461,7 @@ function character:on_collide(e1, e2, dx, dy)
 		end
 	elseif e2.type == "bouncer" and self.yspeed > 0 then
 		self.yspeed = -6
+		self.y = self.y + dy
 	elseif e2.type == "fatknightsword" and self.HIT == 0 then
 		self.HIT = 32
 		if e2.holder.x < self.x then

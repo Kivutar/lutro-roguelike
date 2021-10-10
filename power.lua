@@ -30,7 +30,7 @@ function power:draw()
 end
 
 function power:on_collide(e1, e2, dx, dy)
-	local JOY_DOWN = lutro.joystick.isDown(self.pad, RETRO_DEVICE_ID_JOYPAD_DOWN)
+	local JOY_DOWN = lutro.joystick.isDown(e2.pad, RETRO_DEVICE_ID_JOYPAD_DOWN)
 
 	if e2.type == "character" and JOY_DOWN then
 		sfx_power:play()
