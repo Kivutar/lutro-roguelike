@@ -5,8 +5,12 @@ titlescreen.__index = titlescreen
 
 function newTitlescreen()
 	local n = {}
-	n.selecter = newAnimation(IMG_selecter,  48, 48, 2, 10)
-	n.index = 0
+	n.selecter1 = newAnimation(IMG_selecter1,  48, 48, 2, 60)
+	n.selecter2 = newAnimation(IMG_selecter2,  48, 48, 2, 60)
+	n.index1 = 0
+	n.index2 = 0
+	n.confirm1 = 0
+	n.confirm2 = 0
 
 	n.classes = {
 		[0] = "knight",
@@ -23,26 +27,50 @@ function titlescreen:update(dt)
 	local JOY_1_RIGHT = lutro.joystick.isDown(1, RETRO_DEVICE_ID_JOYPAD_RIGHT)
 	local JOY_1_A = lutro.joystick.isDown(1, RETRO_DEVICE_ID_JOYPAD_A)
 
-	if JOY_1_LEFT  then GO_LEFT  = GO_LEFT  + 1 else GO_LEFT  = 0 end
-	if JOY_1_RIGHT then GO_RIGHT = GO_RIGHT + 1 else GO_RIGHT = 0 end
-	if JOY_1_A     then CONFIRM  = CONFIRM  + 1 else CONFIRM  = 0 end
+	local JOY_2_LEFT  = lutro.joystick.isDown(2, RETRO_DEVICE_ID_JOYPAD_LEFT)
+	local JOY_2_RIGHT = lutro.joystick.isDown(2, RETRO_DEVICE_ID_JOYPAD_RIGHT)
+	local JOY_2_A = lutro.joystick.isDown(2, RETRO_DEVICE_ID_JOYPAD_A)
 
-	if GO_RIGHT == 1 and self.index < 3 then
-		self.index = self.index + 1
+	if self.confirm1 == 0 then
+		if JOY_1_LEFT  then GO_LEFT1  = GO_LEFT1  + 1 else GO_LEFT1  = 0 end
+		if JOY_1_RIGHT then GO_RIGHT1 = GO_RIGHT1 + 1 else GO_RIGHT1 = 0 end
+		if JOY_1_A     then self.confirm1  = self.confirm1  + 1 else self.confirm1  = 0 end
+	end
+
+	if self.confirm2 == 0 then
+		if JOY_2_LEFT  then GO_LEFT2  = GO_LEFT2  + 1 else GO_LEFT2  = 0 end
+		if JOY_2_RIGHT then GO_RIGHT2 = GO_RIGHT2 + 1 else GO_RIGHT2 = 0 end
+		if JOY_2_A     then self.confirm2  = self.confirm2  + 1 else self.confirm2  = 0 end
+	end
+
+	if GO_RIGHT1 == 1 and self.index1 < 3 then
+		self.index1 = self.index1 + 1
 		sfx_select:play()
 	end
 
-	if GO_LEFT == 1 and self.index > 0 then
-		self.index = self.index - 1
+	if GO_LEFT1 == 1 and self.index1 > 0 then
+		self.index1 = self.index1 - 1
 		sfx_select:play()
 	end
 
-	if CONFIRM == 1 then
-		if self.index == 0 or self.index == 2 then
+	if GO_RIGHT2 == 1 and self.index2 < 3 then
+		self.index2 = self.index2 + 1
+		sfx_select:play()
+	end
+
+	if GO_LEFT2 == 1 and self.index2 > 0 then
+		self.index2 = self.index2 - 1
+		sfx_select:play()
+	end
+
+	if JOY_1_A or JOY_2_A then sfx_confirm:play() end
+
+	if self.confirm1 == 1 and self.confirm2 == 1 then
+		if self.index1 == 0 or self.index1 == 2 then
 			sfx_confirm:play()
-			generate_map(self.classes[self.index])
-			character1 = newCharacter({x=(start[2]-1)*8*16+64-8, y=48, class=self.classes[self.index], pad=1})
-			character2 = newCharacter({x=(start[2]-1)*8*16+64-8, y=48, class="enchanter", pad=2})
+			generate_map()
+			character1 = newCharacter({x=(start[2]-1)*8*16+64-8, y=48, class=self.classes[self.index1], pad=1})
+			character2 = newCharacter({x=(start[2]-1)*8*16+64-8, y=48, class=self.classes[self.index2], pad=2})
 			table.insert(entities, character1)
 			lifebar1 = newLifeBar({ch = character1, align="left"})
 			if character2 then
@@ -57,11 +85,15 @@ function titlescreen:update(dt)
 		end
 	end
 
-	self.selecter:update(dt)
+	if self.confirm1 == 1 then self.selecter1.timer = 0 end
+	if self.confirm2 == 1 then self.selecter2.timer = 0 end
+	self.selecter1:update(dt)
+	self.selecter2:update(dt)
 end
 
 function titlescreen:draw()
 	lutro.graphics.draw(IMG_title)
-	self.selecter:draw(80 + self.index*32, 144)
+	self.selecter1:draw(80 + self.index1*32, 144)
+	self.selecter2:draw(80 + self.index2*32, 144)
 end
 

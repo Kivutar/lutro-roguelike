@@ -1,10 +1,3 @@
-if not lutro then
-	lutro = love
-	compat = false
-else
-	compat = true
-end
-
 require "global"
 require "anim"
 require "slam"
@@ -725,7 +718,8 @@ function lutro.load()
 	IMG_bridge = lutro.graphics.newImage("assets/bridge.png")
 	IMG_bouncer = lutro.graphics.newImage("assets/bouncer.png")
 	IMG_gold = lutro.graphics.newImage("assets/gold.png")
-	IMG_selecter = lutro.graphics.newImage("assets/selecter.png")
+	IMG_selecter1 = lutro.graphics.newImage("assets/selecter1.png")
+	IMG_selecter2 = lutro.graphics.newImage("assets/selecter2.png")
 	IMG_title = lutro.graphics.newImage("assets/title.png")
 	IMG_vampirecanine = lutro.graphics.newImage("assets/vampirecanine.png")
 	IMG_potion = lutro.graphics.newImage("assets/potion.png")
