@@ -5,7 +5,7 @@ character.__index = character
 
 function newCharacter(n)
 	n.type = "character"
-	n.width = 12
+	n.width = 10
 	n.height = 16
 	n.xspeed = 0
 	n.yspeed = 0
@@ -122,17 +122,17 @@ function newCharacter(n)
 end
 
 function character:on_the_ground()
-	return solid_at(self.x + 1, self.y + 16, self)
-		or solid_at(self.x + 11, self.y + 16, self)
+	return solid_at(self.x + 0, self.y + 16, self)
+		or solid_at(self.x + 9, self.y + 16, self)
 end
 
 function character:on_a_bridge()
-	return bridge_at(self.x + 1, self.y + 16, self)
-		or bridge_at(self.x + 11, self.y + 16, self)
+	return bridge_at(self.x + 0, self.y + 16, self)
+		or bridge_at(self.x + 9, self.y + 16, self)
 end
 
 function character:attached()
-	return (self.direction == "right" and ground_at(self.x + 15, self.y, self) and not ground_at(self.x + 15, self.y -1, self))
+	return (self.direction == "right" and ground_at(self.x + 10, self.y, self) and not ground_at(self.x + 10, self.y -1, self))
 	    or (self.direction == "left"  and ground_at(self.x -  1, self.y, self) and not ground_at(self.x -  1, self.y -1, self))
 end
 
@@ -404,7 +404,7 @@ function character:update(dt)
 end
 
 function character:draw()
-	self.anim:draw(self.x-16-2, self.y-16)
+	self.anim:draw(self.x-16-3, self.y-16)
 
 	local ox = -7
 	if self.direction == "left" then
